@@ -1,4 +1,5 @@
 import {SparseMatrixBool} from "./sparseMatrix.js";
+import {Point} from "./point.js";
 
 export class GameOfLife{
 
@@ -8,7 +9,7 @@ export class GameOfLife{
         this.current = initial_seed.dup()
         this.set_rate(1)
         this.running_state = true
-        this.runner = setInterval(this.next_generation,this.rate)
+        this.runner = setInterval(()=>this.next_generation(),this.rate)
     }
 
     set_rate(rate){
@@ -40,7 +41,6 @@ export class GameOfLife{
                 clearInterval(this.runner)
                 this.reset_game()
                 break
-
         }
     }
 
@@ -72,7 +72,7 @@ export class GameOfLife{
             let cur_state = this.current.get(x,y)
             let next_state = gen_rule(cur_state,num_neighbors)
             if(cur_state!==next_state){
-                changes.push(new point(x,y,next_state))
+                changes.push(new Point(x,y,next_state))
             }
         })
 
@@ -88,12 +88,4 @@ const gen_rule = (cur_state,number_of_neighbors)=>{
         return number_of_neighbors >= 2 && number_of_neighbors <= 3
     }
     return number_of_neighbors === 3
-}
-
-class point{
-    constructor(x,y,next_val) {
-        this.x = x
-        this.y = y
-        this.next_val = next_val
-    }
 }

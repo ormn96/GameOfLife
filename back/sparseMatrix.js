@@ -1,4 +1,6 @@
-import * as math from 'mathjs'
+
+import {Point} from "./point.js";
+
 export class SparseMatrixBool {
 
     constructor() {
@@ -58,5 +60,21 @@ export class SparseMatrixBool {
            mat.push(row)
        }
        return mat
+   }
+
+   to_point_array(){
+        const ret = []
+       this.forEach((x,y,m)=>{
+           ret.push({x:x,y:y})
+       })
+       return ret
+   }
+
+   static from_point_array(point_array){
+       const m = new SparseMatrixBool()
+       point_array.forEach(v=>{
+           m.set(v.x,v.y,true)
+       })
+       return m
    }
 }
