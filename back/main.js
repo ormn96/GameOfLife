@@ -3,7 +3,7 @@
 import {SparseMatrixBool} from "./sparseMatrix.js";
 import {GameOfLife} from "./GameOfLife.js";
 import {save_template,get_template_by_name} from "./database.js";
-
+import {penta_decathlon} from "./knowns.js";
 
 const a = new SparseMatrixBool()
 // console.log(a.get(1,1))
@@ -23,7 +23,7 @@ const a = new SparseMatrixBool()
 // const gol = new GameOfLife(a,printer)
 
 const run1=()=>{
-    import {penta_decathlon} from "./knowns.js";
+
     const Penta_decathlon = penta_decathlon()
     save_template('Penta-decathlon',Penta_decathlon)
     // console.log(Penta_decathlon.crop_to_matrix(0,0,2))
@@ -35,7 +35,7 @@ const run1=()=>{
 }
 
 // run1()
-get_template_by_name('Penta-decathlon').then(v=>console.log(SparseMatrixBool.from_point_array(v.pattern)))
+get_template_by_name('Penta-decathlon').then(v=>console.log(SparseMatrixBool.from_point_array(v.pattern).dup()))
 // console.log(gol.current)
 // gol.next_generation()
 // console.log(gol.current)

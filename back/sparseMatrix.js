@@ -1,6 +1,3 @@
-
-import {Point} from "./point.js";
-
 export class SparseMatrixBool {
 
     constructor() {
@@ -10,7 +7,7 @@ export class SparseMatrixBool {
    set(x,y,v){
         if (!v){
             if(!this.m.get(x)) return;
-            if(!this.m.get(x).get(y)) return;
+            if(!this.m.get(x).has(y)) return;
             this.m.get(x).delete(y)
             if(this.m.get(x).size===0){
                 this.m.delete(x)
@@ -18,21 +15,20 @@ export class SparseMatrixBool {
             return
         }
         if(! this.m.get(x)){
-            this.m.set(x,new Map())
+            this.m.set(x,new Set())
         }
-       this.m.get(x).set(y,v)
+       this.m.get(x).add(y)
    }
 
    get(x,y){
        if(!this.m.get(x)) return false;
-       if(!this.m.get(x).get(y)) return false;
-       return this.m.get(x).get(y)
+       return this.m.get(x).has(y)
    }
 
    forEach(callback){
         let _this = this
-        this.m.forEach((map,x)=>{
-            map.forEach((val,y)=>{
+        this.m.forEach((set,x)=>{
+            set.forEach((y)=>{
                 callback(x,y,_this)
             })
         })
@@ -40,12 +36,8 @@ export class SparseMatrixBool {
 
    dup(){
        let cop = new SparseMatrixBool()
-       this.m.forEach((map,x)=>{
-           let tmp = new Map()
-           cop.m.set(x,tmp)
-           this.m.get(x).forEach((v,y)=>{
-               tmp.set(y,v)
-           })
+       this.m.forEach((original_set,x)=>{
+           cop.m.set(x,new Set(original_set))
        })
        return cop
    }
@@ -64,7 +56,7 @@ export class SparseMatrixBool {
 
    to_point_array(){
         const ret = []
-       this.forEach((x,y,m)=>{
+       this.forEach((x,y)=>{
            ret.push({x:x,y:y})
        })
        return ret

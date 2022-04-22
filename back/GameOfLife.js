@@ -1,5 +1,4 @@
 import {SparseMatrixBool} from "./sparseMatrix.js";
-import {Point} from "./point.js";
 
 export class GameOfLife{
 
@@ -51,7 +50,7 @@ export class GameOfLife{
 
     next_generation(){
         const cells_to_check = new SparseMatrixBool()
-        this.current.forEach((x,y,m)=>{
+        this.current.forEach((x,y)=>{
             for (let i = -1;i<=1;i++){
                 for (let j = -1;j<=1;j++){
                     cells_to_check.set(x+i,y+j,true)
@@ -60,7 +59,7 @@ export class GameOfLife{
         })
         const changes = []
             
-        cells_to_check.forEach((x,y,m)=>{
+        cells_to_check.forEach((x,y)=>{
             let num_neighbors = 0
             for (let i = -1;i<=1;i++){
                 for (let j = -1;j<=1;j++){
@@ -88,4 +87,12 @@ const gen_rule = (cur_state,number_of_neighbors)=>{
         return number_of_neighbors >= 2 && number_of_neighbors <= 3
     }
     return number_of_neighbors === 3
+}
+
+class Point{
+    constructor(x,y,next_val) {
+        this.x = x
+        this.y = y
+        this.next_val = next_val
+    }
 }
