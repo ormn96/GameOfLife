@@ -25,3 +25,11 @@ export const penta_decathlon = ()=>{
 
     return m
 }
+
+export const blinker = ()=>{
+    const m = new SparseMatrixBool()
+    m.set(0,0,true)
+    m.set(0,1,true)
+    m.set(0,-1,true)
+    return m
+}
