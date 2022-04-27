@@ -1,0 +1,9 @@
+<p>grid works!</p>
+
+<div *ngFor="let row of game.mat">
+  <span *ngFor="let cell of row" [class.red]="cell" [class.blue]="!cell">
+      {{cell}}
+  </span>
+</div>
+
+<button (click)="swap()" class="btn btn-light">swap</button>
