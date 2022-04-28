@@ -11,6 +11,10 @@ export class GameOfLife{
         this.runner = setInterval(()=>this.next_generation(),this.rate)
     }
 
+    get_current_state(){
+        return this.current
+    }
+
     set_rate(rate){
         if(rate <= 0 )
             return
@@ -22,7 +26,7 @@ export class GameOfLife{
     }
 
     game_control(control){
-        switch (control) {
+        switch (control.toLowerCase()) {
             case 'resume':
                 if(!this.running_state){
                     this.runner = setInterval(this.next_generation,this.rate)
@@ -40,6 +44,8 @@ export class GameOfLife{
                 clearInterval(this.runner)
                 this.reset_game()
                 break
+            default:
+                throw "unknown operation"
         }
     }
 

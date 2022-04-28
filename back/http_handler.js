@@ -13,6 +13,8 @@ const myLogger = function (req, res, next) {
 app.use(myLogger)
 app.use(express.json())
 import * as db from "./database.js"
+import {GameOfLife} from "./GameOfLife.js";
+import {add_game, get_game} from "./runningGames.js";
 
 
 const serv = http.createServer(app)
@@ -29,19 +31,43 @@ app.get("/templates/single/:name",async (req,res)=>{
 app.put("/templates/single",async (req,res)=>{
     const body = req.body
     await db.save_template(body.name,body.pattern)
-    res.status(200).send("")
+    res.send("")
+})
+app.post("/game/start", (req,res)=>{
+    const body = req.body
+    let game = new GameOfLife(body.seed,(full,changes)=>{
+        //TODO add web socket
+    })
+    let uuid = add_game(game)
+
+    res.send({
+        game_id:uuid
+    })
 })
 
-app.get('/cookie',(req,res)=>{
-    res.cookie("username",'or')
-    res.send('1')
-
+app.post("/game/:operation", (req,res)=>{
+    const body = req.body
+    try {
+        let game = get_game(body.uuid)
+        game.game_control(req.params['operation'])
+        res.send({
+            current_state:game.get_current_state()
+        })
+    }catch (e) {
+        res.status(400).send(e)
+    }
 })
-app.get('/test',(req,res)=>{
-    console.log(req.headers.cookie)
-    res.send('1')
-
-})
+//
+// app.get('/cookie',(req,res)=>{
+//     res.cookie("username",'or')
+//     res.send('1')
+//
+// })
+// app.get('/test',(req,res)=>{
+//     console.log(req.headers.cookie)
+//     res.send('1')
+//
+// })
 
 const PORT = process.env.PORT || 3030
 serv.listen(PORT, () => {
