@@ -12,6 +12,15 @@ const myLogger = function (req, res, next) {
 }
 app.use(myLogger)
 app.use(express.json())
+
+const cors = require('cors')
+const corsOptions = {
+    // Make sure origin contains the url your frontend is running on
+    origin: ['http://127.0.0.1:4200', 'http://localhost:4200'],
+    credentials: true,
+}
+app.use(cors(corsOptions))
+
 import * as db from "./database.js"
 import {GameOfLife} from "./GameOfLife.js";
 import {add_game, get_game} from "./runningGames.js";
@@ -37,7 +46,7 @@ app.post("/game/start", (req,res)=>{
     const body = req.body
     let game = new GameOfLife(body.seed,(full,changes)=>{
         //TODO add web socket
-    })
+    },body.running_state)
     let uuid = add_game(game)
 
     res.send({
@@ -70,6 +79,6 @@ app.post("/game/:operation", (req,res)=>{
 // })
 
 const PORT = process.env.PORT || 3030
-serv.listen(PORT, () => {
+serv.listen(PORT,"localhost", () => {
     console.log(`Server is running on port: ${PORT}`)
 })

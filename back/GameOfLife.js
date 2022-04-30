@@ -2,17 +2,26 @@ import {SparseMatrixBool} from "./sparseMatrix.js";
 
 export class GameOfLife{
 
-    constructor(initial_seed,after_generation_callback) {
+    constructor(initial_seed,after_generation_callback,start_running_state) {
         this.after_generation_callback = after_generation_callback
-        this.initial_seed = initial_seed
-        this.current = initial_seed.dup()
+        this.initial_seed = this.parse_initial_seed(initial_seed)
+        this.current = this.initial_seed.dup()
         this.set_rate(1)
-        this.running_state = true
-        this.runner = setInterval(()=>this.next_generation(),this.rate)
+        this.running_state = start_running_state
+        if(start_running_state){
+            this.runner = setInterval(()=>this.next_generation(),this.rate)
+        }
+    }
+    parse_initial_seed(initial_seed){
+        if(initial_seed instanceof SparseMatrixBool)
+            return initial_seed
+        return SparseMatrixBool.from_point_array(initial_seed)
     }
 
+
+
     get_current_state(){
-        return this.current
+        return this.current.to_point_array()
     }
 
     set_rate(rate){
@@ -40,9 +49,14 @@ export class GameOfLife{
                 }
                 break
             case 'stop':
-                this.running_state = false
-                clearInterval(this.runner)
+                if(this.running_state){
+                    this.running_state = false
+                    clearInterval(this.runner)
+                }
                 this.reset_game()
+                break
+            case 'one_step':
+                this.next_generation()
                 break
             default:
                 throw "unknown operation"
@@ -83,7 +97,7 @@ export class GameOfLife{
 
         changes.forEach(value => this.current.set(value.x,value.y,value.next_val))
 
-        this.after_generation_callback(this.current,changes)
+        this.after_generation_callback(this.get_current_state(),changes)
     }
 
 }

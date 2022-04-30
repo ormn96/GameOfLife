@@ -1,7 +1,23 @@
-.red{
-  color:red;
+.alive_cell{
+  background-color:black;
 }
 
-.blue{
-  color:blue;
+.dead_cell{
+  background-color:white;
+}
+
+
+.cell{
+  size: 20px 20px;
+  min-height: 20px;
+  min-width: 20px;
+
+}
+
+.grid_table{
+  empty-cells: show;
+}
+
+.grid_table td{
+  border: 1px solid silver;
 }

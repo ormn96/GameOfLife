@@ -1,9 +1,15 @@
 <p>grid works!</p>
+<table class="grid_table">
+  <tr *ngFor="let row of game.mat;let indexOfRow=index;" style="height: 20px">
+    <td *ngFor="let cell of row;let indexOfCol=index;" class="cell" [class.alive_cell]="cell" [class.dead_cell]="!cell" (click)="game.change_state(indexOfRow,indexOfCol)">
+      <!--      {{(cell)?1:0}}-->
+    </td>
+  </tr>
+</table>
 
-<div *ngFor="let row of game.mat">
-  <span *ngFor="let cell of row" [class.red]="cell" [class.blue]="!cell">
-      {{cell}}
-  </span>
-</div>
 
-<button (click)="swap()" class="btn btn-light">swap</button>
+<button (click)="game.start_game()" class="btn btn-light">start</button>
+<button (click)="game.one_step()" class="btn btn-light">one step</button>
+<button (click)="game.stop_game()" class="btn btn-light">stop</button>
+<button (click)="game.get_template('Penta-decathlon')" class="btn btn-light">Penta-decathlon</button>
+<button (click)="game.get_template('spacefiller1')" class="btn btn-light">spacefiller1</button>
