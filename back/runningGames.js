@@ -1,3 +1,6 @@
+// These lines make "require" available
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 
 export{add_game,delete_game,get_game}
 const games = new Map()
