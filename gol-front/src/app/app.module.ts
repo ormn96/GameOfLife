@@ -4,11 +4,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { GridComponent } from './grid/grid.component';
 import {HttpClientModule} from "@angular/common/http";
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GridComponent
+    GridComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

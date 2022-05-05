@@ -1,0 +1,23 @@
+<div
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':modalService.displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{modalService.title}}</h4>
+      </div>
+      <div class="modal-body">
+        {{modalService.body}}
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger"
+                (click)="modalService.closePopup()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
