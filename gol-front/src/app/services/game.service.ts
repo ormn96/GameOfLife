@@ -25,6 +25,7 @@ export class GameService {
     }
   }
 
+  private screen:Point[] = []
   public mat:boolean[][] = []
   public game_id:string = ""
   public grid_size:number = 51
@@ -32,6 +33,10 @@ export class GameService {
 
 
   public change_state(x:number,y:number){
+    if(this.mat[x][y])
+      Point.delete_from_array(this.screen,x,y)
+    else
+      this.screen.push(Point.get_point(x,y))
     this.mat[x][y] = !this.mat[x][y]
   }
 
@@ -54,7 +59,8 @@ export class GameService {
 
   public debug_set_grid(point_array_json:string|null){
     if(!point_array_json)return
-    this.update_grid(JSON.parse(point_array_json))
+    this.screen = JSON.parse(point_array_json)
+    this.update_grid(this.screen)
   }
 
   private grid_to_point_array(grid:boolean[][]):Point[]{
@@ -74,7 +80,7 @@ export class GameService {
   }
 
   public start_game(){
-  this.http.post<GameStartResponse>(this.constants.startGame,{seed:this.grid_to_point_array(this.mat),running_state:false}).subscribe(res=>this.game_id = res.game_id)
+  this.http.post<GameStartResponse>(this.constants.startGame,{seed:this.screen,running_state:false}).subscribe(res=>this.game_id = res.game_id)
   }
 
   public one_step(){
@@ -94,6 +100,7 @@ export class GameService {
   public get_template(name:string){
     this.http.get<any>(this.constants.templateByName+"/"+name).subscribe(res=>{
       if(res.pattern!=null)
+        this.screen = res.pattern
         this.update_grid(res.pattern)
     })
   }
