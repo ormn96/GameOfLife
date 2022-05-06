@@ -59,8 +59,8 @@ export class GameService {
       for(let j=0;j<grid[i].length;j++){
         if(grid[i][j]){
           let p = new Point()
-          p.x = i-delta
-          p.y = j-delta
+          p.x = this.middle_point[0]+i-delta
+          p.y = this.middle_point[1]+j-delta
           ret.push(p)
         }
       }
