@@ -7,6 +7,7 @@ import {GameService} from "../services/game.service";
   styleUrls: ['./grid.component.css']
 })
 export class GridComponent implements OnInit {
+  window = window;
 
   constructor(public game:GameService) { }
 

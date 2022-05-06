@@ -52,6 +52,11 @@ export class GameService {
     }
   }
 
+  public debug_set_grid(point_array_json:string|null){
+    if(!point_array_json)return
+    this.update_grid(JSON.parse(point_array_json))
+  }
+
   private grid_to_point_array(grid:boolean[][]):Point[]{
     let delta = Math.floor((this.grid_size/2))
     let ret:Point[] = []
