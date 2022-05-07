@@ -28,9 +28,9 @@ import {add_game, get_game} from "./runningGames.js";
 
 const serv = http.createServer(app)
 
-app.get("/templates/names",async (req,res)=>{
-    const names = await db.get_all_templates_preview()
-    res.send(names)
+app.get("/templates/preview",async (req,res)=>{
+    const previews = await db.get_all_templates_preview()
+    res.send(previews)
 })
 
 app.get("/templates/single/:name",async (req,res)=>{
@@ -39,9 +39,31 @@ app.get("/templates/single/:name",async (req,res)=>{
 })
 app.put("/templates/single",async (req,res)=>{
     const body = req.body
-    await db.save_template(body.name,body.pattern)
+    await db.save_template(body.name,body.pattern,body.image)
     res.send("")
 })
+
+app.get("/templates/preview/user/name/:name",async (req,res)=>{
+    const previews = await db.get_user_templates_preview_by_name(req.params['name'])
+    res.send(previews)
+})
+
+app.get("/templates/preview/user/username/:username",async (req,res)=>{
+    const previews = await db.get_user_templates_preview_by_username(req.params['username'])
+    res.send(previews)
+})
+
+app.get("/templates/user/single/:username/:name",async (req,res)=>{
+    const template = await db.get_user_template_pattern(req.params['username'],req.params['name'])
+    res.send(template)
+})
+
+app.put("/templates/user/single",async (req,res)=>{
+    const body = req.body
+    await db.save_user_template(body.username,body.name,body.pattern,body.image)
+    res.send("")
+})
+
 app.post("/game/start", (req,res)=>{
     const body = req.body
     let game = new GameOfLife(body.seed,(full,changes)=>{
