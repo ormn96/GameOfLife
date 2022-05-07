@@ -25,35 +25,49 @@ const err_add = (e)=>{
     console.log("error_adding",e)
 }
 
-export const save_template = async (name,template) =>{
-    await init()
-    if(template instanceof SparseMatrixBool)
-        templates_collection.insertOne({name:name,pattern:template.to_point_array()}).then(log_add).catch(err_add)
-    else
-        templates_collection.insertOne({name:name,pattern:template}).then(log_add).catch(err_add)
-}
+// export const save_template = async (name,template) =>{
+//     await init()
+//     if(template instanceof SparseMatrixBool)
+//         templates_collection.insertOne({name:name,pattern:template.to_point_array()}).then(log_add).catch(err_add)
+//     else
+//         templates_collection.insertOne({name:name,pattern:template}).then(log_add).catch(err_add)
+// }
 
 export const get_template_by_name = async (name) => {
     await init()
-    return templates_collection.findOne({name:name},{projection:{_id:0}})
+    return templates_collection.findOne({name:name,owner:'SYSTEM'},{projection:{_id:0,pattern:1}})
 }
 
-export const get_all_templates_names = async () => {
+export const get_all_templates_preview = async () => {
     await init()
-    return templates_collection.find({},{projection:{_id:0,name:1}}).map(v=>v.name).toArray()
+    return templates_collection.find({owner:'SYSTEM'},{projection:{_id:0,name:1,image:1}}).map(v=>{return {name:v.name,image:v.image}}).toArray()
 }
 
-export const save_user_template = async (username,name,template) =>{
+export const save_template = async (name,template,img) =>{
     await init()
-    users_templates_collection.insertOne({name:name,owner:username,pattern:template.to_point_array()}).then(log_add).catch(err_add)
+    templates_collection.insertOne({name:name,owner:'SYSTEM',pattern:template,image:img}).then(log_add).catch(err_add)
 }
 
-export const get_user_templates_by_username = async (username) => {
+export const save_user_template = async (username,name,template,img) =>{
     await init()
-    return users_templates_collection.find({owner:username},{projection:{_id:0}}).toArray()
+    templates_collection.insertOne({name:name,owner:username,pattern:template,image:img}).then(log_add).catch(err_add)
 }
 
-export const get_user_templates_by_name = async (name) => {
+export const get_user_templates_preview_by_username = async (username) => {
+    if(username==='SYSTEM')
+        return []
     await init()
-    return users_templates_collection.find({name:name},{projection:{_id:0}}).toArray()
+    return templates_collection.find({owner:username},{projection:{_id:0,pattern:0}}).map(v=>{return {name:v.name,owner:v.owner,image:v.image}}).toArray()
+}
+
+export const get_user_templates_preview_by_name = async (name) => {
+    await init()
+    return templates_collection.find({name:name},{projection:{_id:0,pattern:0}}).map(v=>{return {name:v.name,owner:v.owner,image:v.image}}).toArray()
+}
+
+export const get_user_template_pattern = async (username,name) => {
+    if(username==='SYSTEM')
+        return null
+    await init()
+    return templates_collection.findOne({name:name,owner:username},{projection:{_id:0,pattern:1}})
 }

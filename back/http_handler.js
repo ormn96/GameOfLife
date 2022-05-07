@@ -29,7 +29,7 @@ import {add_game, get_game} from "./runningGames.js";
 const serv = http.createServer(app)
 
 app.get("/templates/names",async (req,res)=>{
-    const names = await db.get_all_templates_names()
+    const names = await db.get_all_templates_preview()
     res.send(names)
 })
 
