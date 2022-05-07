@@ -1,7 +1,7 @@
 <p>grid works!</p>
 <table class="grid_table">
   <tr *ngFor="let row of game.mat;let indexOfRow=index;" style="height: 20px">
-    <td *ngFor="let cell of row;let indexOfCol=index;" class="cell" [class.alive_cell]="cell" [class.dead_cell]="!cell" (click)="game.change_state(indexOfRow,indexOfCol)">
+    <td *ngFor="let cell of row;let indexOfCol=index;" class="cell" [class.alive_cell]="cell" [class.dead_cell]="!cell" (click)="game.change_state_view(indexOfRow,indexOfCol)">
       <!--      {{(cell)?1:0}}-->
     </td>
   </tr>

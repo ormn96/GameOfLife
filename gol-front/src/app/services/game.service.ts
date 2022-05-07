@@ -31,20 +31,39 @@ export class GameService {
   public mat:boolean[][] = []
   public game_id:string = ""
   public grid_size:number = 51
+  private delta = Math.floor((this.grid_size/2))
   public middle_point:number[] = [0,0]
   private handelError = this._handleError.bind(this)
 
-  public change_state(x:number,y:number){
+  public change_state_view(x:number, y:number){
+    //infinite screen
+    let px = this.middle_point[0]+x-this.delta
+    let py = this.middle_point[1]+y-this.delta
     if(this.mat[x][y])
+      Point.delete_from_array(this.screen,px,py)
+    else
+      this.screen.push(Point.get_point(px,py))
+
+    //view
+    this.mat[x][y] = !this.mat[x][y]
+  }
+
+  public change_state_infinite(x:number, y:number){
+    //infinite screen
+    if(Point.arrayHas(this.screen,x,y))
       Point.delete_from_array(this.screen,x,y)
     else
       this.screen.push(Point.get_point(x,y))
-    this.mat[x][y] = !this.mat[x][y]
+
+    //view
+    let px = x-this.middle_point[0]+this.delta
+    let py = y-this.middle_point[1]+this.delta
+    this.mat[px][py] = !this.mat[px][py]
   }
 
   private update_grid(grid_to_set:Point[]){
     this.create_empty_grid(this.grid_size)
-    let delta = Math.floor((this.grid_size/2))
+    let delta = this.delta
 
     for( let point of grid_to_set){
       let row = point.x
@@ -91,8 +110,10 @@ export class GameService {
     this.http.post<GameResponse>(this.constants.oneStepGame,{uuid:this.game_id})
       .pipe(catchError(this.handelError))
       .subscribe(res=>{
-      if(res.current_state!=null)
-        this.update_grid(res.current_state)
+        if(res.current_state!=null) {
+          this.screen = res.current_state
+          this.update_grid(this.screen)
+        }
     })
   }
 
@@ -100,8 +121,10 @@ export class GameService {
     this.http.post<GameResponse>(this.constants.stopGame,{uuid:this.game_id})
       .pipe(catchError(this.handelError))
       .subscribe(res=>{
-      if(res.current_state!=null)
-        this.update_grid(res.current_state)
+      if(res.current_state!=null) {
+        this.screen = res.current_state
+        this.update_grid(this.screen)
+      }
     })
   }
 
