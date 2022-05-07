@@ -6,16 +6,8 @@
   background-color:white;
 }
 
-
-.cell{
-  size: 20px 20px;
-  min-height: 20px;
-  min-width: 20px;
-
-}
-
 .grid_table{
-  empty-cells: show;
+  /*empty-cells: show;*/
 }
 
 .grid_table td{
