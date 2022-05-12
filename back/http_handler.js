@@ -2,6 +2,7 @@
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
+const bodyParser = require('body-parser')
 const express = require('express')
 const http = require('http')
 const app = express()
@@ -11,7 +12,10 @@ const myLogger = function (req, res, next) {
     next()
 }
 app.use(myLogger)
-app.use(express.json())
+
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
 
 const cors = require('cors')
 const corsOptions = {

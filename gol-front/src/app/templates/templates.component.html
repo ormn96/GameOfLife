@@ -1,0 +1,55 @@
+<p>templates works!</p>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" data-bs-toggle="tab" href="#common">Common</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-bs-toggle="tab" href="#user">User</a>
+  </li>
+</ul>
+<br/>
+<div id="myTabContent" class="tab-content">
+  <div class="tab-pane fade active show" id="common">
+    <div class="overflow-auto" style="max-height: 60vh;min-height: 60vh;">
+
+        <div *ngFor="let template of templates_list" class="card text-white bg-secondary col-8"
+        (click)="clickCommonTemplate(template)">
+          <div class="card-header">{{template.name}}</div>
+          <div class="card-body">
+            <div *ngIf="template.image">
+              <img [src]="template.image" style="max-width: 50%;">
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+  </div>
+  <div class="tab-pane fade" id="user">
+    <p>11111111111111111111carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+  </div>
+</div>
+<div class="card text-white bg-dark col-8"  >
+  <div class="card-header">Save Pattern</div>
+  <div class="card-body">
+    <div class="row">
+      <label class="col-3" style="align-self: center;">Username:</label>
+      <div class="col-12">
+        <input type="text" placeholder="Username" class="form-control" id="username">
+      </div>
+    </div>
+<br/>
+    <div class="row">
+      <label class="col-4" style="align-self: center;">Pattern name:</label>
+      <div class="col-12">
+        <input type="text" placeholder="Pattern name" class="form-control" id="patternname">
+      </div>
+    </div>
+  </div>
+
+<div class="" style="text-align: center">
+  <button class="btn btn-light col-4 " (click)="save()">Save</button>
+</div>
+
+</div>
+

@@ -6,13 +6,14 @@ import {GameResponse} from "../models/GameResponse";
 import {Point} from "../models/point";
 import {catchError, EMPTY} from "rxjs";
 import {ToaserService} from "../toaster/toaser.service";
+import {ErrorService} from "./error.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
 
-  constructor(private http: HttpClient,private constants: ConstantsService,private toaster:ToaserService) {
+  constructor(private http: HttpClient,private constants: ConstantsService,private toaster:ToaserService,private error:ErrorService) {
     this.create_empty_grid(this.grid_size)
   }
 
@@ -33,7 +34,10 @@ export class GameService {
   public grid_size:number = 51
   private delta = Math.floor((this.grid_size/2))
   public middle_point:number[] = [0,0]
-  private handelError = this._handleError.bind(this)
+
+  getScreen(){
+    return this.screen
+  }
 
   public change_state_view(x:number, y:number){
     //infinite screen
@@ -102,13 +106,13 @@ export class GameService {
 
   public start_game(){
   this.http.post<GameStartResponse>(this.constants.startGame,{seed:this.screen,running_state:false})
-    .pipe(catchError(this.handelError))
+    .pipe(catchError(this.error.handelError))
     .subscribe(res=>this.game_id = res.game_id)
   }
 
   public one_step(){
     this.http.post<GameResponse>(this.constants.oneStepGame,{uuid:this.game_id})
-      .pipe(catchError(this.handelError))
+      .pipe(catchError(this.error.handelError))
       .subscribe(res=>{
         if(res.current_state!=null) {
           this.screen = res.current_state
@@ -119,7 +123,7 @@ export class GameService {
 
   public stop_game(){
     this.http.post<GameResponse>(this.constants.stopGame,{uuid:this.game_id})
-      .pipe(catchError(this.handelError))
+      .pipe(catchError(this.error.handelError))
       .subscribe(res=>{
       if(res.current_state!=null) {
         this.screen = res.current_state
@@ -130,7 +134,7 @@ export class GameService {
 
   public get_template(name:string){
     this.http.get<any>(this.constants.templateByName+"/"+name)
-      .pipe(catchError(this.handelError))
+      .pipe(catchError(this.error.handelError))
       .subscribe(res=>{
       if(res.pattern!=null)
         this.screen = res.pattern
@@ -138,20 +142,5 @@ export class GameService {
     })
   }
 
-  private _handleError(error: HttpErrorResponse) {
-    if (error.status === 0) {
-      // A client-side or network error occurred. Handle it accordingly.
-      this.toaster.show('error in http request',error.error)
-      console.error('An error occurred:', error.error);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
-      this.toaster.show('error in http request',error.error)
-      console.error(
-        `Backend returned code ${error.status}, body was: `, error.error);
-    }
-    return EMPTY
-    // Return an observable with a user-facing error message.
-    // return throwError(() => new Error('Something bad happened; please try again later.'));
-  }
+
 }

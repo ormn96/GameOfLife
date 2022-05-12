@@ -17,6 +17,10 @@ export class ConstantsService {
   public stopGame = this.gameUrl+"stop"
 
   public templates = this.serverUrl+"templates/"
+  public systemTemplates = this.templates+'preview'
+
+  public userTemplates = this.templates + "user/"
+  public saveUserTemplate = this.userTemplates+"single"
 
   public templateByName = this.templates+"single"
 
