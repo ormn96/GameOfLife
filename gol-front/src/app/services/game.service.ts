@@ -18,14 +18,16 @@ export class GameService {
   }
 
   private create_empty_grid(size:number){
-    this.mat = []
-    for (let i = 0; i < size; i++) {
-      let row = []
-      for (let j = 0; j < size; j++) {
-        row[j]=false
-      }
-      this.mat[i]=row
-    }
+    this.mat = new Array(size)
+      .fill(false)
+      .map(()=>new Array<boolean>(size).fill(false))
+    // for (let i = 0; i < size; i++) {
+    //   let row = []
+    //   for (let j = 0; j < size; j++) {
+    //     row[j]=false
+    //   }
+    //   this.mat[i]=row
+    // }
   }
 
   private screen:Point[] = []
