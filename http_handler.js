@@ -17,13 +17,13 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 
-// const cors = require('cors')
+const cors = require('cors')
 // const corsOptions = {
 //     // Make sure origin contains the url your frontend is running on
 //     origin: ['http://127.0.0.1:4200', 'http://localhost:4200'],
 //     credentials: true,
 // }
-// app.use(cors(corsOptions))
+app.use(cors())
 
 import * as db from "./database.js"
 import {GameOfLife} from "./GameOfLife.js";
