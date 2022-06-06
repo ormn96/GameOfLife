@@ -8,7 +8,7 @@ export class ConstantsService {
 
   constructor() { }
 
-  public serverUrl = "http://localhost:3030/"
+  public serverUrl = "https://game-of-life-b-2022.herokuapp.com/"
 
   public gameUrl = this.serverUrl+'game/'
 

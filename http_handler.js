@@ -17,13 +17,13 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 
-const cors = require('cors')
-const corsOptions = {
-    // Make sure origin contains the url your frontend is running on
-    origin: ['http://127.0.0.1:4200', 'http://localhost:4200'],
-    credentials: true,
-}
-app.use(cors(corsOptions))
+// const cors = require('cors')
+// const corsOptions = {
+//     // Make sure origin contains the url your frontend is running on
+//     origin: ['http://127.0.0.1:4200', 'http://localhost:4200'],
+//     credentials: true,
+// }
+// app.use(cors(corsOptions))
 
 import * as db from "./database.js"
 import {GameOfLife} from "./GameOfLife.js";
@@ -103,6 +103,9 @@ app.post("/game/:operation", (req,res)=>{
 //     res.send('1')
 //
 // })
+app.get("/",(req,res)=>{
+    res.send("test")
+})
 
 const PORT = process.env.PORT || 3030
 serv.listen(PORT,"localhost", () => {
