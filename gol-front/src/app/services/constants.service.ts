@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, isDevMode} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +7,13 @@ export class ConstantsService {
 
 
   constructor() { }
+  private static getServerUrl():string{
+    if(isDevMode())
+      return "http://localhost:3030/"
+    return "http://localhost:"+location.port+'/'
+  }
+  public serverUrl =ConstantsService.getServerUrl()
 
-  public serverUrl = "https://game-of-life-b-2022.herokuapp.com/"
 
   public gameUrl = this.serverUrl+'game/'
 

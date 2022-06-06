@@ -103,8 +103,21 @@ app.post("/game/:operation", (req,res)=>{
 //     res.send('1')
 //
 // })
-app.get("/",(req,res)=>{
-    res.send("test")
+
+// function requireHTTPS(req, res, next) {
+//     // The 'x-forwarded-proto' check is for Heroku
+//     if (!req.secure && req.get('x-forwarded-proto') !== 'https') {
+//         return res.redirect('https://' + req.get('host') + req.url);
+//     }
+//     next();
+// }
+// app.use(requireHTTPS)
+// Serve static files from the React frontend app
+app.use(express.static('gol-front/dist/gol-front'))
+
+// AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
+app.get('*', (req, res) => {
+    res.sendFile('/frontend/dist/gol-front/index.html')
 })
 
 const PORT = process.env.PORT || 3030
