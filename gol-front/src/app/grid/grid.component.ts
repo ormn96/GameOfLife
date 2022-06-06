@@ -13,14 +13,19 @@ export class GridComponent implements OnInit {
 
   ngOnInit(): void {
   this.game.grid_size$.subscribe((newSize=>{
-    this.size = `min(80vw/${newSize},80vh/${newSize})`
+    this.setSize(newSize)
+  }))
+    this.setSize(this.game.grid_size)
+  }
+
+  private setSize(newSize:number){
+    let size = `min(60vw/${newSize},75vh/${newSize})`
     this.cellCss = {
-      'min-width': this.size
+      'min-width': size
     }
     this.rowCss ={
-      'height': this.size
+      'height': size
     }
-  }))
   }
 
   public swap(){
@@ -28,14 +33,8 @@ export class GridComponent implements OnInit {
   }
 
 
-  private size = `min(80vw/${this.game.grid_size},80vh/${this.game.grid_size})`
+  public  cellCss:any
 
-  public  cellCss = {
-    'min-width': this.size
-  }
-
-  public  rowCss ={
-    'height': this.size
-  }
+  public  rowCss :any
 
 }
