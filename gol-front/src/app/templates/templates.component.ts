@@ -7,6 +7,7 @@ import {catchError} from "rxjs";
 import {GameService} from "../services/game.service";
 // @ts-ignore
 import {toPng} from 'dom-to-image';
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-templates',
@@ -15,11 +16,19 @@ import {toPng} from 'dom-to-image';
 })
 export class TemplatesComponent implements OnInit {
 
+  public searchSelectorForm = new FormControl(false); //false = username ; true = pattern
+  public searchInputForm = new FormControl('');
+  public saveUsernameForm = new FormControl('');
+  public savePatternForm = new FormControl('');
   public templates_list:Template[] = []
+  public user_templates_list:Template[]=[]
+  public list_filter = new FormControl('');
+
   constructor(private http: HttpClient,private constants: ConstantsService,private error:ErrorService,private game:GameService) { }
 
   ngOnInit(): void {
     this.getTemplates()
+    this.searchInputForm.valueChanges.subscribe(this.searchUser.bind(this))
   }
 
   private getTemplates(){
@@ -32,11 +41,13 @@ export class TemplatesComponent implements OnInit {
     this.game.get_template(template.name)
   }
 
+  clickUserTemplate(template: Template) {
+    this.game.get_user_template(template.owner,template.name)
+  }
+
    save()  {
-    // @ts-ignore
-    let username = document.getElementById("username").value
-    // @ts-ignore
-    let patternname = document.getElementById("patternname").value
+    let username = this.saveUsernameForm.value
+    let patternname = this.savePatternForm.value
     let grid = document.getElementById("gol-grid")
     if(!grid)return
     // html2canvas(grid).then(c=>{
@@ -63,6 +74,27 @@ export class TemplatesComponent implements OnInit {
     })
 
     }
+
+    private searchUser(value:string){
+    if(value===""){
+      this.user_templates_list = []
+      return
+    }
+    if(this.searchSelectorForm.value){
+      this.http.get<Template[]>(this.constants.userTemplatePreviewByPatternName+value)
+        .pipe(catchError(this.error.handelError))
+        .subscribe(v=>this.user_templates_list = v)
+    }else{
+      this.http.get<Template[]>(this.constants.userTemplatePreviewByUsername+value)
+        .pipe(catchError(this.error.handelError))
+        .subscribe(v=>this.user_templates_list = v)
+    }
+
+    }
+
+  changeSearchType() {
+    this.searchInputForm.updateValueAndValidity({ onlySelf: false, emitEvent: true })
+  }
 
 }
 

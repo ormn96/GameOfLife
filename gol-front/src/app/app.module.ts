@@ -7,6 +7,8 @@ import {HttpClientModule} from "@angular/common/http";
 import { ToaseterContainerComponent } from './toaster/toaseter-container/toaseter-container.component';
 import { ButtonBarComponent } from './button-bar/button-bar.component';
 import { TemplatesComponent } from './templates/templates.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import { FilterRegexPipe } from './pipes/filter-regex.pipe';
 
 @NgModule({
   declarations: [
@@ -14,11 +16,13 @@ import { TemplatesComponent } from './templates/templates.component';
     GridComponent,
     ToaseterContainerComponent,
     ButtonBarComponent,
-    TemplatesComponent
+    TemplatesComponent,
+    FilterRegexPipe
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -144,5 +144,14 @@ export class GameService {
     })
   }
 
+  public get_user_template(owner:string,name:string){
+    this.http.get<any>(this.constants.getUserTemplate+"/"+owner+"/"+name)
+      .pipe(catchError(this.error.handelError))
+      .subscribe(res=>{
+        if(res.pattern!=null)
+          this.screen = res.pattern
+        this.update_grid(res.pattern)
+      })
+  }
 
 }
