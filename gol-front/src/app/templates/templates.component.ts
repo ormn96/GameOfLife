@@ -7,7 +7,7 @@ import {catchError} from "rxjs";
 import {GameService} from "../services/game.service";
 // @ts-ignore
 import {toPng} from 'dom-to-image';
-import {FormControl} from "@angular/forms";
+import {UntypedFormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-templates',
@@ -16,13 +16,13 @@ import {FormControl} from "@angular/forms";
 })
 export class TemplatesComponent implements OnInit {
 
-  public searchSelectorForm = new FormControl(false); //false = username ; true = pattern
-  public searchInputForm = new FormControl('');
-  public saveUsernameForm = new FormControl('');
-  public savePatternForm = new FormControl('');
+  public searchSelectorForm = new UntypedFormControl(false); //false = username ; true = pattern
+  public searchInputForm = new UntypedFormControl('');
+  public saveUsernameForm = new UntypedFormControl('');
+  public savePatternForm = new UntypedFormControl('');
   public templates_list:Template[] = []
   public user_templates_list:Template[]=[]
-  public list_filter = new FormControl('');
+  public list_filter = new UntypedFormControl('');
 
   constructor(private http: HttpClient,private constants: ConstantsService,private error:ErrorService,private game:GameService) { }
 

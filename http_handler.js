@@ -18,12 +18,12 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 
 const cors = require('cors')
-const corsOptions = {
-    // Make sure origin contains the url your frontend is running on
-    origin: ['http://127.0.0.1:4200', 'http://localhost:4200'],
-    credentials: true,
-}
-app.use(cors(corsOptions))
+// const corsOptions = {
+//     // Make sure origin contains the url your frontend is running on
+//     origin: ['http://127.0.0.1:4200', 'http://localhost:4200'],
+//     credentials: true,
+// }
+app.use(cors())
 
 import * as db from "./database.js"
 import {GameOfLife} from "./GameOfLife.js";
@@ -104,7 +104,23 @@ app.post("/game/:operation", (req,res)=>{
 //
 // })
 
+// function requireHTTPS(req, res, next) {
+//     // The 'x-forwarded-proto' check is for Heroku
+//     if (!req.secure && req.get('x-forwarded-proto') !== 'https') {
+//         return res.redirect('https://' + req.get('host') + req.url);
+//     }
+//     next();
+// }
+// app.use(requireHTTPS)
+// Serve static files from the React frontend app
+app.use(express.static('gol-front/dist/gol-front'))
+
+// AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
+app.get('*', (req, res) => {
+    res.sendFile('/frontend/dist/gol-front/index.html')
+})
+
 const PORT = process.env.PORT || 3030
-serv.listen(PORT,"localhost", () => {
+serv.listen(PORT,"0.0.0.0", () => {
     console.log(`Server is running on port: ${PORT}`)
 })

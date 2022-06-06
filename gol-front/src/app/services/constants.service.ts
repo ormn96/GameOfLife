@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, isDevMode} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -6,9 +6,16 @@ import { Injectable } from '@angular/core';
 export class ConstantsService {
 
 
-  constructor() { }
+  constructor() {
+    console.log(location.origin)
+  }
+  private static getServerUrl():string{
+    if(isDevMode())
+      return "http://localhost:3030/"
+    return location.origin+'/'
+  }
+  public serverUrl =ConstantsService.getServerUrl()
 
-  public serverUrl = "http://localhost:3030/"
 
   public gameUrl = this.serverUrl+'game/'
 

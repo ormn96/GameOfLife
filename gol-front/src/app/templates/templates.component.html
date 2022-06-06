@@ -1,10 +1,12 @@
-<p>templates works!</p>
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="nav-link active" data-bs-toggle="tab" href="#common">Common</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" data-bs-toggle="tab" href="#user">User</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-bs-toggle="tab" href="#save">Save</a>
   </li>
 </ul>
 <div class=" col-4">
@@ -13,7 +15,7 @@
 <br/>
 <div id="myTabContent" class="tab-content">
   <div class="tab-pane fade active show" id="common">
-    <div class="overflow-auto" style="max-height: 60vh;min-height: 60vh;">
+    <div class="overflow-auto" style="max-height: 80vh;min-height: 80vh;">
 
         <div *ngFor="let template of templates_list | filterRegex:list_filter.value"
              class="card text-white bg-secondary col-8"
@@ -29,7 +31,9 @@
     </div>
 
   </div>
-  <div class="tab-pane fade" id="user" style="max-height: 60vh;min-height: 60vh;">
+
+
+  <div class="tab-pane fade" id="user" style="max-height: 80vh;min-height: 80vh;">
 <div style="padding-bottom: 10px;">
   <div>
     username
@@ -43,7 +47,7 @@
   </div>
 </div>
 
-    <div class="overflow-auto" style="max-height: 50vh;min-height: 50vh;">
+    <div class="overflow-auto" style="max-height: 70vh;min-height: 70vh;">
       <div *ngFor="let template of user_templates_list | filterRegex:list_filter.value" class="card text-white bg-secondary col-8"
            (click)="clickUserTemplate(template)">
         <div class="card-header">{{template.name}}</div>
@@ -55,28 +59,33 @@
       </div>
     </div>
   </div>
-</div>
-<div class="card text-white bg-dark col-8"  >
-  <div class="card-header">Save Pattern</div>
-  <div class="card-body">
-    <div class="row">
-      <label class="col-3" style="align-self: center;">Username:</label>
-      <div class="col-12">
-        <input type="text" placeholder="Username" class="form-control" id="username" [formControl]="saveUsernameForm">
+
+
+  <div class="tab-pane fade" id="save" style="max-height: 50vh;min-height: 50vh;">
+    <div class="card text-white bg-dark col-8 save"  >
+      <div class="card-header">Save Pattern</div>
+      <div class="card-body">
+        <div class="row">
+          <label class="col-3" style="align-self: center;">Username:</label>
+          <div class="col-12">
+            <input type="text" placeholder="Username" class="form-control" id="username" [formControl]="saveUsernameForm">
+          </div>
+        </div>
+        <br/>
+        <div class="row">
+          <label class="col-4" style="align-self: center;">Pattern name:</label>
+          <div class="col-12">
+            <input type="text" placeholder="Pattern name" class="form-control" id="patternname" [formControl]="savePatternForm">
+          </div>
+        </div>
       </div>
-    </div>
-<br/>
-    <div class="row">
-      <label class="col-4" style="align-self: center;">Pattern name:</label>
-      <div class="col-12">
-        <input type="text" placeholder="Pattern name" class="form-control" id="patternname" [formControl]="savePatternForm">
+
+      <div class="" style="text-align: center">
+        <button class="btn btn-light col-4 " (click)="save()">Save</button>
       </div>
+
     </div>
   </div>
-
-<div class="" style="text-align: center">
-  <button class="btn btn-light col-4 " (click)="save()">Save</button>
 </div>
 
-</div>
 
