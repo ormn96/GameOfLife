@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 class Toast {
   static timeout = 2000
 
-  constructor(public title:string,public body:string,list:Toast[]) {
+  constructor(public title:string,public body:string,list:Toast[],public error:boolean) {
     setTimeout(()=>{
       list.shift()
     },Toast.timeout)
@@ -23,7 +23,10 @@ export class ToaserService {
     return this._toasts
   }
 
+  showError(title: string, body: string) {
+  this._toasts.push(new Toast(title,body,this._toasts,true))
+  }
   show(title: string, body: string) {
-  this._toasts.push(new Toast(title,body,this._toasts))
+    this._toasts.push(new Toast(title,body,this._toasts,false))
   }
 }

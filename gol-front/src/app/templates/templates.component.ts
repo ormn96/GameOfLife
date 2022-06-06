@@ -8,6 +8,7 @@ import {GameService} from "../services/game.service";
 // @ts-ignore
 import {toPng} from 'dom-to-image';
 import {UntypedFormControl} from "@angular/forms";
+import {ToaserService} from "../toaster/toaser.service";
 
 @Component({
   selector: 'app-templates',
@@ -24,7 +25,7 @@ export class TemplatesComponent implements OnInit {
   public user_templates_list:Template[]=[]
   public list_filter = new UntypedFormControl('');
 
-  constructor(private http: HttpClient,private constants: ConstantsService,private error:ErrorService,private game:GameService) { }
+  constructor(private http: HttpClient,private constants: ConstantsService,private error:ErrorService,private game:GameService,private toaster:ToaserService) { }
 
   ngOnInit(): void {
     this.getTemplates()
@@ -69,8 +70,8 @@ export class TemplatesComponent implements OnInit {
          image:im,
          pattern:this.game.getScreen()
        },{headers:{}}).pipe(catchError(this.error.handelError)).subscribe(v=>{
-         console.log("Sfsdf")
-         console.log(v)})
+         this.toaster.show('Save','Saved successfully')
+         })
     })
 
     }

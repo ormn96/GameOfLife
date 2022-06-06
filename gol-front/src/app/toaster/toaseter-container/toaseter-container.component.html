@@ -1,5 +1,5 @@
 <div style="position: absolute; z-index: 9000; top:0;right:0;">
-  <div *ngFor="let toast of toaster_service.toasts" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+  <div *ngFor="let toast of toaster_service.toasts" class="toast show" role="alert" aria-live="assertive" aria-atomic="true" [class.bg-warning]="!toast.error">
     <div class="toast-header">
       <strong class="me-auto">{{toast.title}}</strong>
       <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close">
