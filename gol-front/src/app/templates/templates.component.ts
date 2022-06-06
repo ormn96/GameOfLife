@@ -51,28 +51,15 @@ export class TemplatesComponent implements OnInit {
     let patternname = this.savePatternForm.value
     let grid = document.getElementById("gol-grid")
     if(!grid)return
-    // html2canvas(grid).then(c=>{
-    //   console.log("image created")
-    //   let im = c.toDataURL()
-    //   this.http.put(this.constants.saveUserTemplate,{
-    //     username:username,
-    //     name:patternname,
-    //     image:im,
-    //     pattern:this.game.getScreen()
-    //   },{headers:{}}).pipe(catchError(this.error.handelError)).subscribe(v=>{
-    //     console.log("Sfsdf")
-    //     console.log(v)})
-    // })
-     toPng(grid).then((im: any)=>{
-       this.http.put(this.constants.saveUserTemplate,{
-         username:username,
-         name:patternname,
-         image:im,
-         pattern:this.game.getScreen()
-       },{headers:{}}).pipe(catchError(this.error.handelError)).subscribe(v=>{
-         this.toaster.show('Save','Saved successfully')
-         })
-    })
+
+     this.http.put(this.constants.saveUserTemplate,{
+       username:username,
+       name:patternname,
+       image:this.game.getImage(),
+       pattern:this.game.getScreen()
+     },{headers:{}}).pipe(catchError(this.error.handelError)).subscribe(v=>{
+       this.toaster.show('Save','Saved successfully')
+     })
 
     }
 

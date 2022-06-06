@@ -1,10 +1,5 @@
-/*.save input{*/
-/*  max-height: 10%;*/
-/*}*/
-/*.save .row{*/
-/*  max-height: 30%;*/
-/*}*/
-
-/*.save{*/
-/*  height: 30%;*/
-/*}*/
+.thumb{
+  min-width: 50%;
+  max-width: 50%;
+  image-rendering: pixelated;
+}

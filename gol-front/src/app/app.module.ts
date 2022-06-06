@@ -9,6 +9,7 @@ import { ButtonBarComponent } from './button-bar/button-bar.component';
 import { TemplatesComponent } from './templates/templates.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import { FilterRegexPipe } from './pipes/filter-regex.pipe';
+import { SizeSelectorComponent } from './size-selector/size-selector.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { FilterRegexPipe } from './pipes/filter-regex.pipe';
     ToaseterContainerComponent,
     ButtonBarComponent,
     TemplatesComponent,
-    FilterRegexPipe
+    FilterRegexPipe,
+    SizeSelectorComponent
   ],
   imports: [
     BrowserModule,

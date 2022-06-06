@@ -12,11 +12,21 @@ export class GridComponent implements OnInit {
   constructor(public game:GameService) { }
 
   ngOnInit(): void {
+  this.game.grid_size$.subscribe((newSize=>{
+    this.size = `min(80vw/${newSize},80vh/${newSize})`
+    this.cellCss = {
+      'min-width': this.size
+    }
+    this.rowCss ={
+      'height': this.size
+    }
+  }))
   }
 
   public swap(){
     this.game.mat[0][0] = !this.game.mat[0][0]
   }
+
 
   private size = `min(80vw/${this.game.grid_size},80vh/${this.game.grid_size})`
 

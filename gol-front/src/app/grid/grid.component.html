@@ -1,5 +1,5 @@
-
-<table class="grid_table" id="gol-grid">
+<app-size-selector></app-size-selector>
+<table class="grid_table center" id="gol-grid" style="">
   <tr *ngFor="let row of game.mat;let indexOfRow=index;" [ngStyle]="rowCss">
     <td *ngFor="let cell of row;let indexOfCol=index;" [ngStyle]="cellCss" [class.alive_cell]="cell" [class.dead_cell]="!cell" (click)="game.change_state_view(indexOfRow,indexOfCol)">
       <!--      {{(cell)?1:0}}-->

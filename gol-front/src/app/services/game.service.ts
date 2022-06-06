@@ -4,9 +4,10 @@ import {ConstantsService} from "./constants.service";
 import {GameStartResponse} from "../models/GameStartResponse";
 import {GameResponse} from "../models/GameResponse";
 import {Point} from "../models/point";
-import {catchError, EMPTY} from "rxjs";
+import {catchError, EMPTY, Observable, of, Subject} from "rxjs";
 import {ToaserService} from "../toaster/toaser.service";
 import {ErrorService} from "./error.service";
+import {content} from "html2canvas/dist/types/css/property-descriptors/content";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,15 @@ import {ErrorService} from "./error.service";
 export class GameService {
 
   constructor(private http: HttpClient,private constants: ConstantsService,private toaster:ToaserService,private error:ErrorService) {
-    this.create_empty_grid(this.grid_size)
+
+
+    this.grid_size$.subscribe(newSize=>{
+      console.log("change")
+      this.grid_size = newSize
+      this.delta = Math.floor((newSize/2))
+      this.update_grid(this.screen)
+    })
+    this.grid_size$.next(51)
   }
 
   private create_empty_grid(size:number){
@@ -33,8 +42,9 @@ export class GameService {
   private screen:Point[] = []
   public mat:boolean[][] = []
   public game_id:string = ""
-  public grid_size:number = 51
-  private delta = Math.floor((this.grid_size/2))
+  public grid_size:number = 0
+  public grid_size$ :Subject<number> = new Subject<number>()
+  private delta = 0
   public middle_point:number[] = [0,0]
 
   getScreen(){
@@ -54,6 +64,7 @@ export class GameService {
     this.mat[x][y] = !this.mat[x][y]
   }
 
+
   public change_state_infinite(x:number, y:number){
     //infinite screen
     if(Point.arrayHas(this.screen,x,y))
@@ -69,19 +80,10 @@ export class GameService {
 
   private update_grid(grid_to_set:Point[]){
     this.create_empty_grid(this.grid_size)
-    let delta = this.delta
 
-    for( let point of grid_to_set){
-      let row = point.x
-      if(row<this.middle_point[0]-delta) continue
-      if(row>this.middle_point[0]+delta) continue
-
-      let col = point.y
-      if(col<this.middle_point[1]-delta) continue
-      if(col>this.middle_point[1]+delta) continue
-
-      this.mat[row-(this.middle_point[0]-delta)][col-(this.middle_point[1]-delta)] = true
-    }
+    this.forEachInFrame(grid_to_set,(x,y)=>{
+      this.mat[x][y] = true
+    })
   }
 
   public debug_set_grid(point_array_json:string|null){
@@ -90,21 +92,6 @@ export class GameService {
     this.update_grid(this.screen)
   }
 
-  private grid_to_point_array(grid:boolean[][]):Point[]{
-    let delta = Math.floor((this.grid_size/2))
-    let ret:Point[] = []
-    for(let i =0 ;i<grid.length;i++){
-      for(let j=0;j<grid[i].length;j++){
-        if(grid[i][j]){
-          let p = new Point()
-          p.x = this.middle_point[0]+i-delta
-          p.y = this.middle_point[1]+j-delta
-          ret.push(p)
-        }
-      }
-    }
-    return ret
-  }
 
   public start_game(){
   this.http.post<GameStartResponse>(this.constants.startGame,{seed:this.screen,running_state:false})
@@ -154,4 +141,42 @@ export class GameService {
       })
   }
 
+  public getImage(){
+    let size = this.grid_size
+    let canvas = document.createElement("canvas")
+    canvas.width = size
+    canvas.height = size
+    let ctx = canvas.getContext('2d')
+    if(!ctx)return ""
+
+    let imageData = ctx.createImageData(size,size)
+    imageData.data.fill(255)
+    this.forEachInFrame(this.screen,(x,y)=>{
+      let i = x * size *4 + y*4
+      imageData.data[i] = 0
+      imageData.data[i+1] = 0
+      imageData.data[i+2] = 0
+      imageData.data[i+3] = 255
+    })
+
+    // @ts-ignore
+    ctx.putImageData(imageData,0,0)
+    console.log(imageData.data)
+    return canvas.toDataURL()
+  }
+
+  private forEachInFrame(pointArray:Point[],fun:(x:number,y:number)=>void){
+    let delta = this.delta
+    for( let point of pointArray){
+      let row = point.x
+      if(row<this.middle_point[0]-delta) continue
+      if(row>this.middle_point[0]+delta) continue
+
+      let col = point.y
+      if(col<this.middle_point[1]-delta) continue
+      if(col>this.middle_point[1]+delta) continue
+
+      fun(row-(this.middle_point[0]-delta),col-(this.middle_point[1]-delta))
+    }
+  }
 }

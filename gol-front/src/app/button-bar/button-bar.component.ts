@@ -12,5 +12,4 @@ export class ButtonBarComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

@@ -8,8 +8,11 @@
 
 .grid_table{
   /*empty-cells: show;*/
+  margin: 20px auto ;
+
 }
 
 .grid_table td{
   border: 1px solid silver;
 }
+
