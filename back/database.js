@@ -57,12 +57,12 @@ export const get_user_templates_preview_by_username = async (username) => {
     if(username==='SYSTEM')
         return []
     await init()
-    return templates_collection.find({owner:username},{projection:{_id:0,pattern:0}}).map(v=>{return {name:v.name,owner:v.owner,image:v.image}}).toArray()
+    return templates_collection.find({owner:{$regex: username,$options: 'i',$ne: 'SYSTEM'}},{projection:{_id:0,pattern:0}}).map(v=>{return {name:v.name,owner:v.owner,image:v.image}}).toArray()
 }
 
 export const get_user_templates_preview_by_name = async (name) => {
     await init()
-    return templates_collection.find({name:name},{projection:{_id:0,pattern:0}}).map(v=>{return {name:v.name,owner:v.owner,image:v.image}}).toArray()
+    return templates_collection.find({name:{$regex: name,$options: 'i'},owner:{$ne:'SYSTEM'}},{projection:{_id:0,pattern:0}}).map(v=>{return {name:v.name,owner:v.owner,image:v.image}}).toArray()
 }
 
 export const get_user_template_pattern = async (username,name) => {
