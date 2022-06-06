@@ -18,7 +18,7 @@ export class GridComponent implements OnInit {
     this.game.mat[0][0] = !this.game.mat[0][0]
   }
 
-  private size = `min(80vw/${this.game.grid_size},90vh/${this.game.grid_size})`
+  private size = `min(80vw/${this.game.grid_size},80vh/${this.game.grid_size})`
 
   public  cellCss = {
     'min-width': this.size
