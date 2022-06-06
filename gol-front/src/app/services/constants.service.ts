@@ -6,11 +6,13 @@ import {Injectable, isDevMode} from '@angular/core';
 export class ConstantsService {
 
 
-  constructor() { }
+  constructor() {
+    console.log(location.origin)
+  }
   private static getServerUrl():string{
     if(isDevMode())
       return "http://localhost:3030/"
-    return "http://localhost:"+location.port+'/'
+    return location.origin+'/'
   }
   public serverUrl =ConstantsService.getServerUrl()
 
