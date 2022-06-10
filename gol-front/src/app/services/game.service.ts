@@ -8,13 +8,14 @@ import {catchError, EMPTY, Observable, of, Subject} from "rxjs";
 import {ToaserService} from "../toaster/toaser.service";
 import {ErrorService} from "./error.service";
 import {content} from "html2canvas/dist/types/css/property-descriptors/content";
+import {WebSocketService} from "./web-socket.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
 
-  constructor(private http: HttpClient,private constants: ConstantsService,private toaster:ToaserService,private error:ErrorService) {
+  constructor(private http: HttpClient,private constants: ConstantsService,private toaster:ToaserService,private error:ErrorService,private ws:WebSocketService) {
 
 
     this.grid_size$.subscribe(newSize=>{
@@ -23,6 +24,12 @@ export class GameService {
       this.update_grid(this.screen)
     })
     this.grid_size$.next(50)
+
+    this.ws.update$.subscribe((changes)=>{
+      changes.forEach((p: { x: number; y: number; })=>{
+        this.change_state_infinite(p.x,p.y)
+      })
+    })
   }
 
   private create_empty_grid(size:number){
@@ -86,7 +93,8 @@ export class GameService {
 
 
   public start_game(){
-  this.http.post<GameStartResponse>(this.constants.startGame,{seed:this.screen,running_state:false})
+    console.log(this.ws.wsId)
+  this.http.post<GameStartResponse>(this.constants.startGame,{seed:this.screen,running_state:true,wsId:this.ws.wsId})
     .pipe(catchError(this.error.handelError))
     .subscribe(res=>this.game_id = res.game_id)
   }

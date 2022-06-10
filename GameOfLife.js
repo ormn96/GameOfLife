@@ -96,8 +96,9 @@ export class GameOfLife{
         })
 
         changes.forEach(value => this.current.set(value.x,value.y,value.next_val))
-
-        this.after_generation_callback(this.get_current_state(),changes)
+        if(this.running_state) {
+            this.after_generation_callback(this.get_current_state(), changes)
+        }
     }
 
 }

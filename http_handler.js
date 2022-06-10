@@ -1,6 +1,7 @@
 // These lines make "require" available
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
+import * as wsHandler from "./webSocketHandler.js";
 
 const bodyParser = require('body-parser')
 const express = require('express')
@@ -71,12 +72,12 @@ app.put("/templates/user/single",async (req,res)=>{
 app.post("/game/start", (req,res)=>{
     const body = req.body
     let game = new GameOfLife(body.seed,(full,changes)=>{
-        //TODO add web socket
+        wsHandler.send(body.wsId,'update',changes)
     },body.running_state)
-    let uuid = add_game(game)
+    add_game(game,body.wsId)
 
     res.send({
-        game_id:uuid
+        game_id:body.wsId
     })
 })
 
@@ -124,3 +125,6 @@ const PORT = process.env.PORT || 3030
 serv.listen(PORT,"0.0.0.0", () => {
     console.log(`Server is running on port: ${PORT}`)
 })
+
+wsHandler.init(serv)
+

@@ -15,7 +15,7 @@ export class ConstantsService {
     return location.origin+'/'
   }
   public serverUrl = ConstantsService.getServerUrl()
-
+  public wsUrl = this.serverUrl.replace(/^http/, 'ws')
 
   public gameUrl = this.serverUrl+'game/'
 
