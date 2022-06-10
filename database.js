@@ -50,7 +50,7 @@ export const save_template = async (name,template,img) =>{
 
 export const save_user_template = async (username,name,template,img) =>{
     await init()
-    templates_collection.insertOne({name:name,owner:username,pattern:template,image:img}).then(log_add).catch(err_add)
+    templates_collection.updateOne({name:name,owner:username},{$set:{name:name,owner:username,pattern:template,image:img}},{upsert:true}).then(log_add).catch(err_add)
 }
 
 export const get_user_templates_preview_by_username = async (username) => {

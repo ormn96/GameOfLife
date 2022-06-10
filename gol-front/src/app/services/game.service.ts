@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {ConstantsService} from "./constants.service";
 import {GameStartResponse} from "../models/GameStartResponse";
 import {GameResponse} from "../models/GameResponse";
 import {Point} from "../models/point";
-import {catchError, EMPTY, Observable, of, Subject} from "rxjs";
+import {catchError,Subject} from "rxjs";
 import {ToaserService} from "../toaster/toaser.service";
 import {ErrorService} from "./error.service";
-import {content} from "html2canvas/dist/types/css/property-descriptors/content";
 import {WebSocketService} from "./web-socket.service";
 
 @Injectable({
@@ -16,8 +15,6 @@ import {WebSocketService} from "./web-socket.service";
 export class GameService {
 
   constructor(private http: HttpClient,private constants: ConstantsService,private toaster:ToaserService,private error:ErrorService,private ws:WebSocketService) {
-
-
     this.grid_size$.subscribe(newSize=>{
       this.grid_size = newSize
       this.delta = Math.floor((newSize/2))
@@ -180,5 +177,10 @@ export class GameService {
 
       fun(newX,newY)
     }
+  }
+
+  public rotate90deg(){
+    this.screen = this.screen.map((p)=>Point.get_point(- p.y, p.x))
+    this.update_grid(this.screen)
   }
 }
