@@ -32,7 +32,7 @@ const handleDisconnect = (userID)=>{
 const send = (userID,key,value)=>{
     if (!livingUsers.has(userID)) return
     livingUsers.get(userID).send(JSON.stringify({key:key,value:value}))
-    console.log('sent',userID,{key:key,value:value})
+    // console.log('sent',userID,{key:key,value:value})
 }
 
 export {init,send}
