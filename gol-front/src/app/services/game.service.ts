@@ -74,6 +74,9 @@ export class GameService {
     //view
     let px = x-this.middle_point[0]+this.delta
     let py = y-this.middle_point[1]+this.delta
+
+    if (px<0 || px >= this.grid_size) return
+    if (py<0 || py >= this.grid_size) return
     this.mat[px][py] = !this.mat[px][py]
   }
 
