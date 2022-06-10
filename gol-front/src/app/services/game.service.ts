@@ -18,25 +18,17 @@ export class GameService {
 
 
     this.grid_size$.subscribe(newSize=>{
-      console.log("change")
       this.grid_size = newSize
       this.delta = Math.floor((newSize/2))
       this.update_grid(this.screen)
     })
-    this.grid_size$.next(51)
+    this.grid_size$.next(50)
   }
 
   private create_empty_grid(size:number){
     this.mat = new Array(size)
       .fill(false)
       .map(()=>new Array<boolean>(size).fill(false))
-    // for (let i = 0; i < size; i++) {
-    //   let row = []
-    //   for (let j = 0; j < size; j++) {
-    //     row[j]=false
-    //   }
-    //   this.mat[i]=row
-    // }
   }
 
   private screen:Point[] = []
@@ -159,9 +151,7 @@ export class GameService {
       imageData.data[i+3] = 255
     })
 
-    // @ts-ignore
     ctx.putImageData(imageData,0,0)
-    console.log(imageData.data)
     return canvas.toDataURL()
   }
 
@@ -169,14 +159,15 @@ export class GameService {
     let delta = this.delta
     for( let point of pointArray){
       let row = point.x
-      if(row<this.middle_point[0]-delta) continue
-      if(row>this.middle_point[0]+delta) continue
-
       let col = point.y
-      if(col<this.middle_point[1]-delta) continue
-      if(col>this.middle_point[1]+delta) continue
 
-      fun(row-(this.middle_point[0]-delta),col-(this.middle_point[1]-delta))
+      let newX = row-(this.middle_point[0]-delta)
+      let newY = col-(this.middle_point[1]-delta)
+
+      if (newX<0 || newX >= this.grid_size) continue
+      if (newY<0 || newY >= this.grid_size) continue
+
+      fun(newX,newY)
     }
   }
 }

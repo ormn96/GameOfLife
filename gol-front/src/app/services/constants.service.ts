@@ -14,7 +14,7 @@ export class ConstantsService {
       return "http://localhost:3030/"
     return location.origin+'/'
   }
-  public serverUrl =ConstantsService.getServerUrl()
+  public serverUrl = ConstantsService.getServerUrl()
 
 
   public gameUrl = this.serverUrl+'game/'

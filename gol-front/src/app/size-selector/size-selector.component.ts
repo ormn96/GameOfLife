@@ -8,9 +8,11 @@ import {GameService} from "../services/game.service";
   styleUrls: ['./size-selector.component.css']
 })
 export class SizeSelectorComponent implements OnInit {
-  public selector = new UntypedFormControl(51)
-  sizes = [5,11,21,31,51,101]
-  constructor(private game:GameService) { }
+  public selector
+  sizes = [5,10,20,30,50,100]
+  constructor(private game:GameService) {
+    this.selector = new UntypedFormControl(this.game.grid_size)
+  }
 
   ngOnInit(): void {
     this.selector.valueChanges.subscribe((v)=>{

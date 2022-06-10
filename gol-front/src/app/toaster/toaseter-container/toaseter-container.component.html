@@ -1,4 +1,4 @@
-<div style="position: absolute; z-index: 9000; top:0;right:0;">
+<div style="position: absolute; z-index: 9000; top:10px;right:10px;">
   <div *ngFor="let toast of toaster_service.toasts" class="toast show" role="alert" aria-live="assertive" aria-atomic="true" [class.bg-warning]="!toast.error">
     <div class="toast-header">
       <strong class="me-auto">{{toast.title}}</strong>
