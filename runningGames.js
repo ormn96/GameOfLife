@@ -11,7 +11,7 @@ const delete_game = (uuid)=>{
     let game = games.get(uuid)
     if(!game)
         return
-    game.game_control('stop')
+    game.game_control('pause')
     games.delete(uuid)
     console.log(`game deleted - ${uuid}`)
     return uuid

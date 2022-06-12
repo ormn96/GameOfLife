@@ -28,7 +28,7 @@ app.use(cors())
 
 import * as db from "./database.js"
 import {GameOfLife} from "./GameOfLife.js";
-import {add_game, get_game} from "./runningGames.js";
+import {add_game, delete_game, get_game} from "./runningGames.js";
 
 
 const serv = http.createServer(app)
@@ -79,6 +79,20 @@ app.post("/game/start", (req,res)=>{
     res.send({
         game_id:body.wsId
     })
+})
+
+app.post("/game/stop", (req,res)=>{
+    const body = req.body
+    try {
+        let game = get_game(body.uuid)
+        game.game_control('pause')
+        res.send({
+            current_state:[]
+        })
+    }catch (e) {
+        res.status(400).send(e)
+    }
+    delete_game(body.uuid)
 })
 
 app.post("/game/:operation", (req,res)=>{

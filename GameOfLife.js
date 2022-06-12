@@ -30,7 +30,7 @@ export class GameOfLife{
         this.rate = 1000/rate
         if(this.running_state){
             clearInterval(this.runner)
-            this.runner = setInterval(this.next_generation,this.rate)
+            this.runner = setInterval(()=>this.next_generation(),this.rate)
         }
     }
 
@@ -38,7 +38,7 @@ export class GameOfLife{
         switch (control.toLowerCase()) {
             case 'resume':
                 if(!this.running_state){
-                    this.runner = setInterval(this.next_generation,this.rate)
+                    this.runner = setInterval(()=>this.next_generation(),this.rate)
                     this.running_state = true
                 }
                 break
@@ -48,7 +48,7 @@ export class GameOfLife{
                     clearInterval(this.runner)
                 }
                 break
-            case 'stop':
+            case 'reset':
                 if(this.running_state){
                     this.running_state = false
                     clearInterval(this.runner)

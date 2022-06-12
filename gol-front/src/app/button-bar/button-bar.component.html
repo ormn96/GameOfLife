@@ -1,6 +1,9 @@
 <button (click)="game.start_game()" class="btn btn-light">start</button>
-<button (click)="game.one_step()" class="btn btn-light">one step</button>
-<button (click)="game.stop_game()" class="btn btn-light">stop</button>
+<button (click)="game.baseOperation('one_step')" class="btn btn-light">one step</button>
+<button (click)="game.baseOperation('reset')" class="btn btn-light">reset</button>
+<button (click)="game.baseOperation('pause')" class="btn btn-light">pause</button>
+<button (click)="game.baseOperation('resume')" class="btn btn-light">resume</button>
+<button (click)="game.baseOperation('stop')" class="btn btn-light">stop</button>
 <button (click)="game.rotate90deg()" class="btn btn-light">rotate</button>
 <button (click)="game.debug_set_grid(window.prompt('enter'))">debug</button>
 

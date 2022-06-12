@@ -99,26 +99,38 @@ export class GameService {
     .subscribe(res=>this.game_id = res.game_id)
   }
 
-  public one_step(){
-    this.http.post<GameResponse>(this.constants.oneStepGame,{uuid:this.game_id})
+  public baseOperation(type:string){
+    let url = ""
+    switch (type){
+      case 'resume':
+        url = this.constants.resumeGame
+        break
+      case 'pause':
+        url = this.constants.pauseGame
+        break
+      case 'reset':
+        url = this.constants.resetGame
+        break
+      case 'one_step':
+        url = this.constants.oneStepGame
+        break
+      case 'stop':
+        url = this.constants.stopGame
+        this.update_grid([])
+        break
+      default:
+        throw "unknown operation"
+    }
+
+
+    this.http.post<GameResponse>(url,{uuid:this.game_id})
       .pipe(catchError(this.error.handelError))
       .subscribe(res=>{
         if(res.current_state!=null) {
           this.screen = res.current_state
           this.update_grid(this.screen)
         }
-    })
-  }
-
-  public stop_game(){
-    this.http.post<GameResponse>(this.constants.stopGame,{uuid:this.game_id})
-      .pipe(catchError(this.error.handelError))
-      .subscribe(res=>{
-      if(res.current_state!=null) {
-        this.screen = res.current_state
-        this.update_grid(this.screen)
-      }
-    })
+      })
   }
 
   public get_template(name:string){
