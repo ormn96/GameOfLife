@@ -13,11 +13,21 @@ export class WebSocketService {
   public wsId = ''
 
   constructor(private constants:ConstantsService,private toaster:ToaserService) {
-    let s = new WebSocket(this.constants.wsUrl)
-    s.onclose = ()=>toaster.showError("Web Socket","Web socket closed")
-    s.onerror= (ev)=>toaster.showError("Web Socket",`Web socket closed :${JSON.stringify(ev)}`)
+    this.connect();
+  }
 
-    s.onmessage = (me)=>{
+  private connect() {
+    let s = new WebSocket(this.constants.wsUrl)
+    s.onclose = () => {
+      this.toaster.showError("Web Socket", "Web socket closed, trying to reconnect."
+      )
+      setTimeout(() =>{
+        this.connect();
+      }, 1000);
+    }
+    s.onerror = (ev) => this.toaster.showError("Web Socket", `Web socket closed :${JSON.stringify(ev)}`)
+
+    s.onmessage = (me) => {
       let message = JSON.parse(me.data)
       switch (message.key) {
         case 'init':
