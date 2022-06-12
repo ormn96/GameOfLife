@@ -3,3 +3,7 @@
   max-width: 50%;
   image-rendering: pixelated;
 }
+
+.ng-invalid.ng-touched {
+  border: 2px solid red;
+}

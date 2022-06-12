@@ -56,6 +56,9 @@ export class TemplatesComponent implements OnInit {
    save()  {
     let username = this.saveUsernameForm.value
     let patternname = this.savePatternForm.value
+     this.saveUsernameForm.markAsTouched()
+     this.savePatternForm.markAsTouched()
+     if(!this.saveUsernameForm.valid || !this.savePatternForm.valid) return;
     let grid = document.getElementById("gol-grid")
     if(!grid)return
      this.http.put(this.constants.saveUserTemplate,{

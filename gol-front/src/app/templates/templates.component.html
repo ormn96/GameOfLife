@@ -68,14 +68,14 @@
         <div class="row">
           <label  style="align-self: center;">Username:</label>
           <div>
-            <input type="text" placeholder="Username" class="form-control" id="username" [formControl]="saveUsernameForm">
+            <input type="text" placeholder="Username" class="form-control" [required]="true" required id="username" [formControl]="saveUsernameForm">
           </div>
         </div>
         <br/>
         <div class="row">
           <label  style="align-self: center;">Pattern name:</label>
           <div >
-            <input type="text" placeholder="Pattern name" class="form-control" id="patternname" [formControl]="savePatternForm">
+            <input type="text" placeholder="Pattern name" class="form-control" [required]="true" required id="patternname" [formControl]="savePatternForm">
           </div>
         </div>
         <div class="form-check">
