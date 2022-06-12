@@ -78,6 +78,12 @@
             <input type="text" placeholder="Pattern name" class="form-control" id="patternname" [formControl]="savePatternForm">
           </div>
         </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="saveImageCheck" checked="" name="saveImageCheck"  [formControl]="saveImageCheckboxForm">
+          <label class="form-check-label" for="saveImageCheck">
+            save thumbnail
+          </label>
+        </div>
         <div class="" style="text-align: center">
           <button class="btn btn-light " style="margin-top: 20px;" (click)="save()">Save</button>
         </div>

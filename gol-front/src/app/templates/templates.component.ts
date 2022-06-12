@@ -21,6 +21,7 @@ export class TemplatesComponent implements OnInit {
   public searchInputForm = new UntypedFormControl('');
   public saveUsernameForm = new UntypedFormControl('');
   public savePatternForm = new UntypedFormControl('');
+  public saveImageCheckboxForm = new UntypedFormControl(true);
   public templates_list:Template[] = []
   public user_templates_list:Template[]=[]
   public list_filter = new UntypedFormControl('');
@@ -51,11 +52,10 @@ export class TemplatesComponent implements OnInit {
     let patternname = this.savePatternForm.value
     let grid = document.getElementById("gol-grid")
     if(!grid)return
-
      this.http.put(this.constants.saveUserTemplate,{
        username:username,
        name:patternname,
-       image:this.game.getImage(),
+       image:(this.saveImageCheckboxForm.value ? this.game.getImage():undefined),
        pattern:this.game.getScreen()
      },{headers:{}}).pipe(catchError(this.error.handelError)).subscribe(v=>{
        this.toaster.show('Save','Saved successfully')
