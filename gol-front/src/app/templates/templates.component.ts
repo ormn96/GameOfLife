@@ -68,6 +68,7 @@ export class TemplatesComponent implements OnInit {
        pattern:this.game.getScreen()
      },{headers:{}}).pipe(catchError(this.error.handelError)).subscribe(v=>{
        this.toaster.show('Save','Saved successfully')
+       this.searchInputForm.updateValueAndValidity()
      })
 
     }
