@@ -40,13 +40,19 @@ export class TemplatesComponent implements OnInit {
   }
 
   clickCommonTemplate(template: Template) {
+    if(this.PromptOverride())return
     this.game.get_template(template.name)
   }
 
   clickUserTemplate(template: Template) {
+    if(this.PromptOverride())return
     this.game.get_user_template(template.owner,template.name)
   }
 
+  private PromptOverride():boolean{
+    return this.game.getScreen().length != 0 && !window.confirm("This will clear the current screen, continue?")
+
+  }
    save()  {
     let username = this.saveUsernameForm.value
     let patternname = this.savePatternForm.value

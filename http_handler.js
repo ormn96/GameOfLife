@@ -71,6 +71,7 @@ app.put("/templates/user/single",async (req,res)=>{
 
 app.post("/game/start", (req,res)=>{
     const body = req.body
+    delete_game(body.wsId)
     let game = new GameOfLife(body.seed,(full,changes)=>{
         wsHandler.send(body.wsId,'update',changes)
     },body.running_state)
@@ -83,15 +84,6 @@ app.post("/game/start", (req,res)=>{
 
 app.post("/game/stop", (req,res)=>{
     const body = req.body
-    try {
-        let game = get_game(body.uuid)
-        game.game_control('pause')
-        res.send({
-            current_state:[]
-        })
-    }catch (e) {
-        res.status(400).send(e)
-    }
     delete_game(body.uuid)
 })
 

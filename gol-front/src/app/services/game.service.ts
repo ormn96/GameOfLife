@@ -79,6 +79,7 @@ export class GameService {
 
   private update_grid(grid_to_set:Point[]){
     this.create_empty_grid(this.grid_size)
+    this.screen = grid_to_set
 
     this.forEachInFrame(grid_to_set,(x,y)=>{
       this.mat[x][y] = true
@@ -87,8 +88,8 @@ export class GameService {
 
   public debug_set_grid(point_array_json:string|null){
     if(!point_array_json)return
-    this.screen = JSON.parse(point_array_json)
-    this.update_grid(this.screen)
+    let screen = JSON.parse(point_array_json)
+    this.update_grid(screen)
   }
 
 
@@ -127,8 +128,8 @@ export class GameService {
       .pipe(catchError(this.error.handelError))
       .subscribe(res=>{
         if(res.current_state!=null) {
-          this.screen = res.current_state
-          this.update_grid(this.screen)
+          let screen = res.current_state
+          this.update_grid(screen)
         }
       })
   }
@@ -137,9 +138,10 @@ export class GameService {
     this.http.get<any>(this.constants.templateByName+"/"+name)
       .pipe(catchError(this.error.handelError))
       .subscribe(res=>{
-      if(res.pattern!=null)
-        this.screen = res.pattern
-        this.update_grid(res.pattern)
+      if(res.pattern!=null){
+        let screen = res.pattern
+        this.update_grid(screen)
+      }
     })
   }
 
@@ -147,9 +149,10 @@ export class GameService {
     this.http.get<any>(this.constants.getUserTemplate+"/"+owner+"/"+name)
       .pipe(catchError(this.error.handelError))
       .subscribe(res=>{
-        if(res.pattern!=null)
-          this.screen = res.pattern
-        this.update_grid(res.pattern)
+        if(res.pattern!=null){
+          let screen = res.pattern
+          this.update_grid(screen)
+        }
       })
   }
 
@@ -192,7 +195,7 @@ export class GameService {
   }
 
   public rotate90deg(){
-    this.screen = this.screen.map((p)=>Point.get_point(- p.y, p.x))
-    this.update_grid(this.screen)
+    let screen = this.screen.map((p)=>Point.get_point(- p.y, p.x))
+    this.update_grid(screen)
   }
 }
