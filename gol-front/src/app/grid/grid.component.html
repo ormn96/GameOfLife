@@ -21,7 +21,7 @@
             <p ngbTooltip="The current generation from start" placement="left">Generation: {{game.generation$ | async}}</p>
           </div>
           <div class="row">
-            <p ngbTooltip="The current generation" placement="left">Population: {{(game.screen$|async)?.length}}</p>
+            <p ngbTooltip="The current generation" placement="left">Population: {{game.screen.length}}</p>
           </div>
 
         </div>

@@ -40,8 +40,7 @@ export class GameService {
   }
 
   public gameStarted = false
-  private screen:Point[] = []
-  public screen$ = of(this.screen)
+  screen:Point[] = []
   public mat:boolean[][] = []
   public game_id:string = ""
   public grid_size:number = 0
@@ -89,6 +88,7 @@ export class GameService {
   }
 
   public reset_grid(){
+    if(this.screen.length!= 0 && !window.confirm("This will clear the current screen, continue?")) return
     this.update_grid([])
     this.generation$.next(0)
   }
@@ -96,7 +96,6 @@ export class GameService {
   private update_grid(grid_to_set:Point[]){
     this.create_empty_grid(this.grid_size)
     this.screen = grid_to_set
-    this.screen$ = of(this.screen)
 
     this.forEachInFrame(grid_to_set,(x,y)=>{
       this.mat[x][y] = true
@@ -160,8 +159,11 @@ export class GameService {
       .pipe(catchError(this.error.handelError))
       .subscribe(res=>{
       if(res.pattern!=null){
+        if(this.gameStarted)
+          this.baseOperation('stop')
         let screen = res.pattern
         this.update_grid(screen)
+        this.generation$.next(0)
       }
     })
   }
@@ -171,8 +173,11 @@ export class GameService {
       .pipe(catchError(this.error.handelError))
       .subscribe(res=>{
         if(res.pattern!=null){
+          if(this.gameStarted)
+            this.baseOperation('stop')
           let screen = res.pattern
           this.update_grid(screen)
+          this.generation$.next(0)
         }
       })
   }
