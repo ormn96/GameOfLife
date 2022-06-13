@@ -1,9 +1,34 @@
-<app-size-selector></app-size-selector>
-<table class="grid_table center" id="gol-grid" style="">
-  <tr *ngFor="let row of game.mat;let indexOfRow=index;" [ngStyle]="rowCss">
-    <td *ngFor="let cell of row;let indexOfCol=index;" [ngStyle]="cellCss" [class.alive_cell]="cell" [class.dead_cell]="!cell" (click)="game.change_state_view(indexOfRow,indexOfCol)">
-      <!--      {{(cell)?1:0}}-->
-    </td>
-  </tr>
-</table>
+<div class="row" style="max-width: fit-content; margin: 0px auto;">
+  <table class="grid_table center col" id="gol-grid" style="position: relative">
+    <tr *ngFor="let row of game.mat;let indexOfRow=index;" [ngStyle]="rowCss">
+      <td *ngFor="let cell of row;let indexOfCol=index;" [ngStyle]="cellCss" [class.alive_cell]="cell" [class.dead_cell]="!cell" (click)="game.change_state_view(indexOfRow,indexOfCol)">
+        <!--      {{(cell)?1:0}}-->
+      </td>
+    </tr>
+  </table>
+
+
+  <div class="col" style="align-items: center;">
+    <div class="col" style="max-width: fit-content;margin: 20px 0">
+      <app-size-selector></app-size-selector>
+    </div>
+
+    <div class="card text-white bg-primary mb-3 stats col" style="padding: 0">
+      <div class="card-header">Stats</div>
+      <div class="card-body">
+        <div class="col">
+          <div class="row">
+            <p ngbTooltip="The current generation from start" placement="left">Generation: {{game.generation$ | async}}</p>
+          </div>
+          <div class="row">
+            <p ngbTooltip="The current generation" placement="left">Population: {{(game.screen$|async)?.length}}</p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
 

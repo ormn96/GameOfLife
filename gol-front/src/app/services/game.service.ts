@@ -4,7 +4,7 @@ import {ConstantsService} from "./constants.service";
 import {GameStartResponse} from "../models/GameStartResponse";
 import {GameResponse} from "../models/GameResponse";
 import {Point} from "../models/point";
-import {catchError,Subject} from "rxjs";
+import {BehaviorSubject, catchError, of, Subject} from "rxjs";
 import {ToaserService} from "../toaster/toaser.service";
 import {ErrorService} from "./error.service";
 import {WebSocketService} from "./web-socket.service";
@@ -20,14 +20,18 @@ export class GameService {
       this.delta = Math.floor((newSize/2))
       this.update_grid(this.screen)
     })
-    this.grid_size$.next(50)
 
-    this.ws.update$.subscribe((changes)=>{
-      changes.forEach((p: { x: number; y: number; })=>{
+    this.ws.update$.subscribe((update)=>{
+      update.grid_change.forEach((p: { x: number; y: number; })=>{
         this.change_state_infinite(p.x,p.y)
       })
+      this.generation$.next(update.generation)
     })
+
+    this.generation$.subscribe(v=>console.log(`gen: ${v}`))
+    this.generation$.next(0)
   }
+
 
   private create_empty_grid(size:number){
     this.mat = new Array(size)
@@ -37,12 +41,16 @@ export class GameService {
 
   public gameStarted = false
   private screen:Point[] = []
+  public screen$ = of(this.screen)
   public mat:boolean[][] = []
   public game_id:string = ""
   public grid_size:number = 0
-  public grid_size$ :Subject<number> = new Subject<number>()
+  public grid_size$ :Subject<number> = new BehaviorSubject<number>(50)
   private delta = 0
   public middle_point:number[] = [0,0]
+  public generation$:Subject<number> = new BehaviorSubject<number>(0)
+
+
 
   getScreen(){
     return this.screen
@@ -82,11 +90,13 @@ export class GameService {
 
   public reset_grid(){
     this.update_grid([])
+    this.generation$.next(0)
   }
 
   private update_grid(grid_to_set:Point[]){
     this.create_empty_grid(this.grid_size)
     this.screen = grid_to_set
+    this.screen$ = of(this.screen)
 
     this.forEachInFrame(grid_to_set,(x,y)=>{
       this.mat[x][y] = true
@@ -140,6 +150,7 @@ export class GameService {
         if(res.current_state!=null) {
           let screen = res.current_state
           this.update_grid(screen)
+          this.generation$.next(res.generation)
         }
       })
   }

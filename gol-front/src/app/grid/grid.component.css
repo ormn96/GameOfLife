@@ -16,3 +16,10 @@
   border: 1px solid silver;
 }
 
+
+.stats{
+  max-width: fit-content;
+  font-size: small;
+  min-width: 200px;
+}
+

@@ -11,6 +11,7 @@ export class GameOfLife{
         if(start_running_state){
             this.runner = setInterval(()=>this.next_generation(),this.rate)
         }
+        this.generation = 0
     }
     parse_initial_seed(initial_seed){
         if(initial_seed instanceof SparseMatrixBool)
@@ -69,6 +70,7 @@ export class GameOfLife{
 
 
     next_generation(){
+        this.generation++
         const cells_to_check = new SparseMatrixBool()
         this.current.forEach((x,y)=>{
             for (let i = -1;i<=1;i++){
@@ -97,7 +99,7 @@ export class GameOfLife{
 
         changes.forEach(value => this.current.set(value.x,value.y,value.next_val))
         if(this.running_state) {
-            this.after_generation_callback(this.get_current_state(), changes)
+            this.after_generation_callback(this, changes)
         }
     }
 
