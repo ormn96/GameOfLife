@@ -1,11 +1,15 @@
 <div class="row" style="max-width: fit-content; margin: 0px auto;">
-  <table class="grid_table center col" id="gol-grid" style="position: relative">
-    <tr *ngFor="let row of game.mat;let indexOfRow=index;" [ngStyle]="rowCss">
-      <td *ngFor="let cell of row;let indexOfCol=index;" [ngStyle]="cellCss" [class.alive_cell]="cell" [class.dead_cell]="!cell" (click)="game.change_state_view(indexOfRow,indexOfCol)">
-        <!--      {{(cell)?1:0}}-->
-      </td>
-    </tr>
-  </table>
+  <div class="col">
+    <table class="grid_table center" id="gol-grid" style="position: relative">
+      <tr *ngFor="let row of game.mat;let indexOfRow=index;" [ngStyle]="rowCss">
+        <td *ngFor="let cell of row;let indexOfCol=index;" [ngStyle]="cellCss" [class.alive_cell]="cell" [class.dead_cell]="!cell" (click)="game.change_state_view(indexOfRow,indexOfCol)">
+          <!--      {{(cell)?1:0}}-->
+        </td>
+      </tr>
+    </table>
+    <app-button-bar></app-button-bar>
+  </div>
+
 
 
   <div class="col" style="align-items: center;">
@@ -30,5 +34,6 @@
     </div>
 
   </div>
+
 </div>
 
