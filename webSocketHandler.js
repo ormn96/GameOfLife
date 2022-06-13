@@ -13,8 +13,8 @@ const init = (serv)=>{
     wss = new Server({server:serv})
 
     wss.on('connection', (ws) => {
-        console.log('Client connected');
         let userID = uuidv4()
+        console.log(`Client connected - ${userID}`);
         livingUsers.set(userID,ws)
         ws.send(JSON.stringify({key:'init',value:userID}))
         ws.on('close', handleDisconnect(userID));

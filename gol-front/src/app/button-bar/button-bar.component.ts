@@ -10,6 +10,7 @@ export class ButtonBarComponent implements OnInit {
   window = window;
   constructor(public game:GameService) { }
 
+
   ngOnInit(): void {
   }
 }

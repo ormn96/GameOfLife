@@ -35,6 +35,7 @@ export class GameService {
       .map(()=>new Array<boolean>(size).fill(false))
   }
 
+  public gameStarted = false
   private screen:Point[] = []
   public mat:boolean[][] = []
   public game_id:string = ""
@@ -47,7 +48,9 @@ export class GameService {
     return this.screen
   }
 
+  //change the matrix based on the front view
   public change_state_view(x:number, y:number){
+    if(this.gameStarted)return
     //infinite screen
     let px = this.middle_point[0]+x-this.delta
     let py = this.middle_point[1]+y-this.delta
@@ -77,6 +80,10 @@ export class GameService {
     this.mat[px][py] = !this.mat[px][py]
   }
 
+  public reset_grid(){
+    this.update_grid([])
+  }
+
   private update_grid(grid_to_set:Point[]){
     this.create_empty_grid(this.grid_size)
     this.screen = grid_to_set
@@ -97,7 +104,10 @@ export class GameService {
     console.log(this.ws.wsId)
   this.http.post<GameStartResponse>(this.constants.startGame,{seed:this.screen,running_state:true,wsId:this.ws.wsId})
     .pipe(catchError(this.error.handelError))
-    .subscribe(res=>this.game_id = res.game_id)
+    .subscribe(res=>{
+      this.game_id = res.game_id
+      this.gameStarted=true
+    })
   }
 
   public baseOperation(type:string){
@@ -117,7 +127,7 @@ export class GameService {
         break
       case 'stop':
         url = this.constants.stopGame
-        this.update_grid([])
+        this.gameStarted=false
         break
       default:
         throw "unknown operation"

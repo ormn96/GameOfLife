@@ -5,6 +5,7 @@ const games = new Map()
 
 const add_game = (game,wsId)=>{
     games.set(wsId,game)
+    console.log(`game added - ${wsId}`)
 }
 
 const delete_game = (uuid)=>{
