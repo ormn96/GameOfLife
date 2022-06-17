@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node http_handler.js",
-    "heroku-postbuild": "cd gol-front && npm install && ng build --aot"
+    "heroku-postbuild": "cd gol-front && npm install --force && ng build --aot"
   },
   "type": "module",
   "author": "",
