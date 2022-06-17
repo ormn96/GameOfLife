@@ -10,13 +10,17 @@ import {GameService} from "../services/game.service";
 export class SizeSelectorComponent implements OnInit {
   public selector
   sizes = [5,10,20,30,50,100]
-  constructor(private game:GameService) {
+  constructor(public game:GameService) {
     this.selector = new UntypedFormControl(this.game.grid_size)
   }
 
   ngOnInit(): void {
     this.selector.valueChanges.subscribe((v)=>{
       this.game.grid_size$.next(v)})
+
+    this.game.grid_size$.subscribe(newSize=>{
+      this.selector.setValue(newSize,{emitEvent:false})
+    })
   }
 
 }

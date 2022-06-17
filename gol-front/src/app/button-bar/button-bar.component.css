@@ -5,3 +5,9 @@
 button{
   margin-right: 2px;
 }
+
+.form-control.ng-invalid.ng-touched {
+  border: 2px solid red;
+  border-radius: 0.25rem;
+}
+

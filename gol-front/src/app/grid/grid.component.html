@@ -1,8 +1,8 @@
 <div class="row" style="max-width: fit-content; margin: 0px auto;">
-  <div class="col">
-    <table class="grid_table center" id="gol-grid" style="position: relative">
+  <div class="col" >
+    <table class="grid_table center" id="gol-grid" style="position: relative" position="top" ngbTooltip="press ctrl to set as new center of the grid" (wheel)="changeSize($event)" >
       <tr *ngFor="let row of game.mat;let indexOfRow=index;" [ngStyle]="rowCss">
-        <td *ngFor="let cell of row;let indexOfCol=index;" [ngStyle]="cellCss" [class.alive_cell]="cell" [class.dead_cell]="!cell" (click)="game.change_state_view(indexOfRow,indexOfCol)">
+        <td *ngFor="let cell of row;let indexOfCol=index;" [ngStyle]="cellCss" [class.alive_cell]="cell" [class.dead_cell]="!cell" (click)="click(indexOfRow,indexOfCol,$event);">
           <!--      {{(cell)?1:0}}-->
         </td>
       </tr>
@@ -27,7 +27,9 @@
           <div class="row">
             <p ngbTooltip="The current generation" placement="left">Population: {{game.screen.length}}</p>
           </div>
-
+          <div class="row">
+            <p style="color: red;font-size: large" *ngIf="ws.game_over$|async">Your Population Extincted!</p>
+          </div>
         </div>
 
       </div>

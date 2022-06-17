@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {ConstantsService} from "./constants.service";
-import {Subject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {ErrorService} from "./error.service";
 import {ToaserService} from "../toaster/toaser.service";
 
@@ -11,6 +11,7 @@ export class WebSocketService {
 
   public update$ = new Subject<any>()
   public wsId = ''
+  public game_over$ = new BehaviorSubject(false)
 
   constructor(private constants:ConstantsService,private toaster:ToaserService) {
     this.connect();
@@ -34,8 +35,10 @@ export class WebSocketService {
           this.wsId = message.value
           break
         case 'update':
-          console.log(message.value)
           this.update$.next(message.value)
+          break
+        case 'game-over':
+          this.game_over$.next(true)
           break
         default:
           console.error(`unknown ws message :`, message)

@@ -1,5 +1,5 @@
 <div style="text-align: center">
-  <button (click)="game.start_game()" class="btn btn-light" placement="top" ngbTooltip="Start new game" *ngIf="!game.gameStarted">
+  <button (click)="game.start_game(); gameNotPaused = true;rateFormControl.setValue(1)" class="btn btn-light" placement="top" ngbTooltip="Start new game" *ngIf="!game.gameStarted">
     new game
   </button>
   <button (click)="game.rotate90deg()" class="btn btn-light"  placement="top" ngbTooltip="Rotate Grid 90 degrees" *ngIf="!game.gameStarted">
@@ -15,35 +15,35 @@
     </svg>
     <!--  reset grid-->
   </button>
-  <button (click)="game.baseOperation('one_step')" class="btn btn-light" placement="top" ngbTooltip="Execute one generation" *ngIf="!!game.gameStarted">
+  <button (click)="game.baseOperation('one_step')" class="btn btn-light" placement="top" ngbTooltip="Execute one generation" *ngIf="game.gameStarted" [disabled]="gameNotPaused">
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-skip-end-circle" viewBox="0 0 16 16">
       <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
       <path d="M6.271 5.055a.5.5 0 0 1 .52.038L9.5 7.028V5.5a.5.5 0 0 1 1 0v5a.5.5 0 0 1-1 0V8.972l-2.71 1.935A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
     </svg>
     <!--  one step-->
   </button>
-  <button (click)="game.baseOperation('reset')" class="btn btn-light" placement="top" ngbTooltip="Reset game to initial seed" *ngIf="!!game.gameStarted">
+  <button (click)="game.baseOperation('reset')" class="btn btn-light" placement="top" ngbTooltip="Reset game to initial seed" *ngIf="game.gameStarted">
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-skip-backward-circle" viewBox="0 0 16 16">
       <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
       <path d="M11.729 5.055a.5.5 0 0 0-.52.038L8.5 7.028V5.5a.5.5 0 0 0-.79-.407L5 7.028V5.5a.5.5 0 0 0-1 0v5a.5.5 0 0 0 1 0V8.972l2.71 1.935a.5.5 0 0 0 .79-.407V8.972l2.71 1.935A.5.5 0 0 0 12 10.5v-5a.5.5 0 0 0-.271-.445z"/>
     </svg>
     <!--  reset-->
   </button>
-  <button (click)="game.baseOperation('pause')" class="btn btn-light" *ngIf="!!game.gameStarted">
+  <button (click)="game.baseOperation('pause'); gameNotPaused = false" placement="top" ngbTooltip="Pause" class="btn btn-light" *ngIf="game.gameStarted" [disabled]="!gameNotPaused">
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pause-circle" viewBox="0 0 16 16">
       <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
       <path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>
     </svg>
     <!--  pause-->
   </button>
-  <button (click)="game.baseOperation('resume')" class="btn btn-light" *ngIf="!!game.gameStarted">
+  <button (click)="game.baseOperation('resume'); gameNotPaused = true" placement="top" ngbTooltip="Resume"  class="btn btn-light" *ngIf="game.gameStarted" [disabled]="gameNotPaused">
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16">
       <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
       <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
     </svg>
     <!--  resume-->
   </button>
-  <button (click)="game.baseOperation('stop')" class="btn btn-light" placement="top" ngbTooltip="Stop game" *ngIf="!!game.gameStarted">
+  <button (click)="game.baseOperation('stop'); ws.game_over$.next(false)" class="btn btn-light" placement="top" ngbTooltip="Stop game" *ngIf="game.gameStarted">
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-stop-circle" viewBox="0 0 16 16">
       <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
       <path d="M5 6.5A1.5 1.5 0 0 1 6.5 5h3A1.5 1.5 0 0 1 11 6.5v3A1.5 1.5 0 0 1 9.5 11h-3A1.5 1.5 0 0 1 5 9.5v-3z"/>
@@ -51,8 +51,10 @@
     <!--  stop-->
   </button>
 
-
-  <button (click)="game.debug_set_grid(window.prompt('enter'))">debug</button>
-
+  <span  placement="top" ngbTooltip="Game rate - number of generations in a second"  *ngIf="game.gameStarted">
+     <label for="customRange3" class="form-label">Run rate:</label>
+    <input type="range" class="form-range" [value]="rateFormControl.valueChanges|async" style="width: 100px;height: fit-content; margin-left: 20px;" [min]="sliderInit[0]" [max]="sliderInit[1]" [step]="sliderInit[2]" id="customRange3" [formControl]="rateFormControl">
+    <input type="number" class="form-control" style="width: 100px;height: fit-content; margin-left: 20px; display: inline" pattern="^\d*(\.\d{0,1})?$" [value]="rateFormControl.valueChanges|async"  [min]="sliderInit[0]" [max]="sliderInit[1]" [step]="sliderInit[2]"  [formControl]="rateFormControl">
+  </span>
 
 </div>

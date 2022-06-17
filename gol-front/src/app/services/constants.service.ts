@@ -26,6 +26,8 @@ export class ConstantsService {
   public pauseGame = this.gameUrl+"pause"
   public stopGame = this.gameUrl+"stop"
 
+  public changeRate = this.gameUrl+"rate"
+
   public templates = this.serverUrl+"templates/"
   public templatesPreview = this.templates+'preview'
   public systemTemplates = this.templatesPreview

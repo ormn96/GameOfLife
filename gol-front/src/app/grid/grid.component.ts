@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {GameService} from "../services/game.service";
+import {WebSocketService} from "../services/web-socket.service";
 
 @Component({
   selector: 'app-grid',
@@ -9,7 +10,7 @@ import {GameService} from "../services/game.service";
 export class GridComponent implements OnInit {
   window = window;
 
-  constructor(public game:GameService) { }
+  constructor(public game:GameService,public ws:WebSocketService) { }
 
   ngOnInit(): void {
   this.game.grid_size$.subscribe((newSize=>{
@@ -37,4 +38,17 @@ export class GridComponent implements OnInit {
 
   public  rowCss :any
 
+  changeSize($event: WheelEvent) {
+    let newSize = this.game.grid_size + Math.sign( $event.deltaY)*10
+    if(newSize<=0)return
+    this.game.grid_size$.next(newSize)
+  }
+
+  click(indexOfRow: number, indexOfCol: number, $event: MouseEvent) {
+    if($event.ctrlKey){
+      this.game.update_middle(indexOfRow,indexOfCol)
+    }else{
+      this.game.change_state_view(indexOfRow,indexOfCol)
+    }
+  }
 }

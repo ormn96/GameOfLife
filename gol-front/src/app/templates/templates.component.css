@@ -6,4 +6,5 @@
 
 .ng-invalid.ng-touched {
   border: 2px solid red;
+  border-radius: 0.25rem;
 }

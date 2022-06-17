@@ -1,6 +1,5 @@
 <div class="form-group row" style="justify-content: center;">
   <label for="sizeSelector" class="form-label " style="width: auto;" >Grid size:</label>
-  <select class="form-select sel" id="sizeSelector" [formControl]="selector"  >
-    <option *ngFor="let v of sizes " [ngValue]="v">{{v}}</option>
-  </select>
+  <input type="number" class="form-control sel" id="sizeSelector" [formControl]="selector" min="10" max="100" step="10" />
+
 </div>

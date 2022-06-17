@@ -28,8 +28,9 @@ export class GameService {
       this.generation$.next(update.generation)
     })
 
-    this.generation$.subscribe(v=>console.log(`gen: ${v}`))
     this.generation$.next(0)
+
+    this.rate$.subscribe(v=>this.setRate(v))
   }
 
 
@@ -48,6 +49,7 @@ export class GameService {
   private delta = 0
   public middle_point:number[] = [0,0]
   public generation$:Subject<number> = new BehaviorSubject<number>(0)
+  public rate$ = new Subject<number>()
 
 
 
@@ -93,6 +95,10 @@ export class GameService {
     this.generation$.next(0)
   }
 
+  public update_grid_current(){
+    this.update_grid(this.screen)
+  }
+
   private update_grid(grid_to_set:Point[]){
     this.create_empty_grid(this.grid_size)
     this.screen = grid_to_set
@@ -117,6 +123,13 @@ export class GameService {
       this.game_id = res.game_id
       this.gameStarted=true
     })
+  }
+
+  public setRate(rate:number){
+    this.http.post(this.constants.changeRate,{uuid:this.game_id,rate:rate})
+      .pipe(catchError(this.error.handelError))
+      .subscribe(res=>{
+      })
   }
 
   public baseOperation(type:string){
@@ -223,5 +236,12 @@ export class GameService {
   public rotate90deg(){
     let screen = this.screen.map((p)=>Point.get_point(- p.y, p.x))
     this.update_grid(screen)
+  }
+
+  update_middle(row: number, col: number) {
+    let px = this.middle_point[0]+row-this.delta
+    let py = this.middle_point[1]+col-this.delta
+    this.middle_point = [px,py]
+    this.update_grid_current()
   }
 }

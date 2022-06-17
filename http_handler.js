@@ -72,11 +72,14 @@ app.put("/templates/user/single",async (req,res)=>{
 app.post("/game/start", (req,res)=>{
     const body = req.body
     delete_game(body.wsId)
-    let game = new GameOfLife(body.seed,(cur_game,changes)=>{
+    let game = new GameOfLife(body.seed,
+        (cur_game,changes)=>{
         wsHandler.send(body.wsId,'update', {
             grid_change:changes,
             generation:cur_game.generation
         })
+    },()=>{
+        wsHandler.send(body.wsId,'game-over','')
     },body.running_state)
     add_game(game,body.wsId)
 
@@ -88,6 +91,18 @@ app.post("/game/start", (req,res)=>{
 app.post("/game/stop", (req,res)=>{
     const body = req.body
     delete_game(body.uuid)
+})
+
+app.post("/game/rate",(req,res)=>{
+    const body = req.body
+    try {
+        let game = get_game(body.uuid)
+        game.set_rate(body.rate)
+        res.send({
+        })
+    }catch (e) {
+        res.status(400).send(e)
+    }
 })
 
 app.post("/game/:operation", (req,res)=>{

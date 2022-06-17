@@ -1,9 +1,11 @@
 import {SparseMatrixBool} from "./sparseMatrix.js";
+import {floor} from "mathjs";
 
 export class GameOfLife{
 
-    constructor(initial_seed,after_generation_callback,start_running_state) {
+    constructor(initial_seed,after_generation_callback,game_over_callback,start_running_state) {
         this.after_generation_callback = after_generation_callback
+        this.game_over_callback=game_over_callback
         this.initial_seed = this.parse_initial_seed(initial_seed)
         this.current = this.initial_seed.dup()
         this.set_rate(1)
@@ -28,7 +30,7 @@ export class GameOfLife{
     set_rate(rate){
         if(rate <= 0 )
             return
-        this.rate = 1000/rate
+        this.rate = floor(1000/rate)
         if(this.running_state){
             clearInterval(this.runner)
             this.runner = setInterval(()=>this.next_generation(),this.rate)
@@ -100,6 +102,11 @@ export class GameOfLife{
         changes.forEach(value => this.current.set(value.x,value.y,value.next_val))
         if(this.running_state) {
             this.after_generation_callback(this, changes)
+        }
+
+        if(this.current.m.size === 0 ){
+            this.game_control('pause')
+            this.game_over_callback()
         }
     }
 
