@@ -37,6 +37,7 @@ export class GridComponent implements OnInit {
   public  cellCss:any
 
   public  rowCss :any
+  ctrl= '';
 
   changeSize($event: WheelEvent) {
     let newSize = this.game.grid_size + Math.sign( $event.deltaY)*10

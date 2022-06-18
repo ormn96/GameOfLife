@@ -91,6 +91,7 @@ export class GameService {
 
   public reset_grid(){
     if(this.screen.length!= 0 && !window.confirm("This will clear the current screen, continue?")) return
+    this.middle_point = [0,0]
     this.update_grid([])
     this.generation$.next(0)
   }
@@ -175,6 +176,7 @@ export class GameService {
         if(this.gameStarted)
           this.baseOperation('stop')
         let screen = res.pattern
+        this.middle_point = [0,0]
         this.update_grid(screen)
         this.generation$.next(0)
       }
@@ -189,6 +191,7 @@ export class GameService {
           if(this.gameStarted)
             this.baseOperation('stop')
           let screen = res.pattern
+          this.middle_point = [0,0]
           this.update_grid(screen)
           this.generation$.next(0)
         }

@@ -1,6 +1,11 @@
 <div class="row" style="max-width: fit-content; margin: 0px auto;">
   <div class="col" >
-    <table class="grid_table center" id="gol-grid" style="position: relative" position="top" ngbTooltip="press ctrl to set as new center of the grid" (wheel)="changeSize($event)" >
+    <table class="grid_table center" id="gol-grid"
+           style="position: relative;"
+           position="top" ngbTooltip="press ctrl to set as new center of the grid"
+           (wheel)="changeSize($event)"
+           (mouseover)="ctrl = ($event.ctrlKey)?'move':''"
+            [ngClass]="ctrl">
       <tr *ngFor="let row of game.mat;let indexOfRow=index;" [ngStyle]="rowCss">
         <td *ngFor="let cell of row;let indexOfCol=index;" [ngStyle]="cellCss" [class.alive_cell]="cell" [class.dead_cell]="!cell" (click)="click(indexOfRow,indexOfCol,$event);">
           <!--      {{(cell)?1:0}}-->

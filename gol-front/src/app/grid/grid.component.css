@@ -23,3 +23,6 @@
   min-width: 200px;
 }
 
+.move{
+  cursor: move !important;
+}

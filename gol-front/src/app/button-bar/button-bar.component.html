@@ -51,6 +51,12 @@
     <!--  stop-->
   </button>
 
+  <button (click)="game.middle_point = [0,0]; game.update_grid_current()" class="btn btn-light" placement="top" ngbTooltip="center to 0,0" >
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrows-angle-contract" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M.172 15.828a.5.5 0 0 0 .707 0l4.096-4.096V14.5a.5.5 0 1 0 1 0v-3.975a.5.5 0 0 0-.5-.5H1.5a.5.5 0 0 0 0 1h2.768L.172 15.121a.5.5 0 0 0 0 .707zM15.828.172a.5.5 0 0 0-.707 0l-4.096 4.096V1.5a.5.5 0 1 0-1 0v3.975a.5.5 0 0 0 .5.5H14.5a.5.5 0 0 0 0-1h-2.768L15.828.879a.5.5 0 0 0 0-.707z"/>
+    </svg>
+    <!--  center-->
+  </button>
   <span  placement="top" ngbTooltip="Game rate - number of generations in a second"  *ngIf="game.gameStarted">
      <label for="customRange3" class="form-label">Run rate:</label>
     <input type="range" class="form-range" [value]="rateFormControl.valueChanges|async" style="width: 100px;height: fit-content; margin-left: 20px;" [min]="sliderInit[0]" [max]="sliderInit[1]" [step]="sliderInit[2]" id="customRange3" [formControl]="rateFormControl">
